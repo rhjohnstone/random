@@ -1,2 +1,2 @@
-# machine-learning
-Coursera machine learning course
+# random
+Random scripts.
