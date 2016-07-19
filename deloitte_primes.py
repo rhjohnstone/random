@@ -52,4 +52,4 @@ for p in primes:
 
 # Print results and time taken (rounded to nearest decisecond).
 print "\n{} of the first {} primes' digits sum to {}.\n".format(count,how_many_primes,target_digits_sum)
-print "Total time taken: {} s.\n".format(round(time.time()-start,1))
+print "Total time taken: {} s.\n".format(round(time.time()-start,2))
