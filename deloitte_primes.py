@@ -37,7 +37,7 @@ while (len(primes) < how_many_primes):
         if (test%p==0):
             is_prime = False
             break
-        elif (p>test**0.5):
+        elif (p>test**0.5): # test is prime if no prime factors less than its square root
             break
     if is_prime:
         primes.append(test)
