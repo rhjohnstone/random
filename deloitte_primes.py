@@ -37,6 +37,8 @@ while (len(primes) < how_many_primes):
         if (test%p==0):
             is_prime = False
             break
+        elif (p>test**0.5):
+            break
     if is_prime:
         primes.append(test)
     test += 1
