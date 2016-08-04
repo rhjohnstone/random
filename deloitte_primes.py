@@ -5,10 +5,6 @@
 # (Try http://pythoncentral.io/execute-python-script-file-shell/ maybe.)
 # Enter positive integers when prompted and press Enter.
 
-# This version uses modulos to sum digits instead of string conversions.
-# Modulo version is quicker according to my timed tests.
-# However, constructing the list of primes is by far the slowest part of this script.
-
 import time
 
 # Define a function that sums an integer's digits by adding the last digit,
@@ -33,11 +29,12 @@ primes = []
 test = 2
 while (len(primes) < how_many_primes):
     is_prime = True
+    ceiling = test**0.5
     for p in primes:
         if (test%p==0):
             is_prime = False
             break
-        elif (p>test**0.5): # test is prime if no prime factors less than its square root
+        elif (p>ceiling):
             break
     if is_prime:
         primes.append(test)
