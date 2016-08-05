@@ -9,6 +9,7 @@ import time
 
 # Define a function that sums an integer's digits by adding the last digit,
 # dividing by 10 (Python automatically rounds down), and repeating.
+# This is written in Python 2; need to use // instead of / in Python 3.
 def sum_digits(_n):
     _total = 0
     while (_n > 0):
@@ -34,7 +35,7 @@ while (len(primes) < how_many_primes):
         if (test%p==0):
             is_prime = False
             break
-        elif (p>ceiling):
+        elif (p>ceiling): # only need to try factor's up to test's square root, because factors pair up
             break
     if is_prime:
         primes.append(test)
