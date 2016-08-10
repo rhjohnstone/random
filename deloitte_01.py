@@ -26,8 +26,8 @@ start = time.time()
 
 # Construct a list of the first N primes. There's probably a faster way to do this,
 # but this method ensures it stops after the first N primes have been found.
-primes = []
-test = 2
+primes = [2]
+test = 3
 while (len(primes) < how_many_primes):
     is_prime = True
     ceiling = test**0.5
@@ -39,7 +39,7 @@ while (len(primes) < how_many_primes):
             break
     if is_prime:
         primes.append(test)
-    test += 1
+    test += 2
     
 # This first bit really takes most of the time.
 print "\nTime taken to construct set of first {} primes: {} s.".format(how_many_primes,round(time.time()-start,2))
