@@ -20,7 +20,7 @@ page_text = page_text.split()
 keyword = page_text[previous_solution-1].lower()
 print "Keyword =", keyword
 
-ciphertext = 'rowmcdxRztjNT7US9D'
+ciphertext = 'rowmcdxN5xCAPQPGpI'
 cipher = Vigenere()
 plaintext = cipher.decode(ciphertext,keyword)
 
