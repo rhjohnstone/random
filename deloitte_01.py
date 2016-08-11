@@ -40,16 +40,20 @@ while (len(primes) < how_many_primes):
     if is_prime:
         primes.append(test)
     test += 2
-    
-# This first bit really takes most of the time.
-print "\nTime taken to construct set of first {} primes: {} s.".format(how_many_primes,round(time.time()-start,2))
 
+prime_time = time.time() - start
+    
 # Go through the primes in the list, and check if their digits sum to the target.
 count = 0
 for p in primes:
     if (sum_digits(p) == target_digits_sum):
         count += 1
 
-# Print results and time taken (rounded to nearest decisecond).
+time_taken = time.time() - start
+
+# This first bit really takes most of the time.
+print "\nTime taken to construct set of first {} primes: {} s.".format(how_many_primes,prime_time)
+
+# Print results and time taken.
 print "\n{} of the first {} primes' digits sum to {}.\n".format(count,how_many_primes,target_digits_sum)
-print "Total time taken: {} s.\n".format(round(time.time()-start,2))
+print "Total time taken: {} s.\n".format(time_taken)
