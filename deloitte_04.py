@@ -1,5 +1,4 @@
 import numpy as np
-import time
 
 def primes_up_to_root(n):
     numbers = np.arange(3,int(np.sqrt(n))+1,2)
@@ -14,8 +13,7 @@ def primes_up_to_root(n):
     numbers = np.insert(numbers,0,2)
     return numbers
     
-def factorise(n):
-    primes = primes_up_to_root(n)
+def factorise(n,primes):
     factors = []
     while (n>1):
         for p in primes:
@@ -25,21 +23,22 @@ def factorise(n):
                 break
     return factors
     
-number_to_factorise = 379065191139531
+first_number_to_factorise = 379065191139531
+next_numbers_to_factorise = [35432488, 806095675586097, 7405814774826, 379065191139531]
 
-start = time.time()
-factors = factorise(number_to_factorise)
-time_taken = time.time()-start
+max_number_to_factorise = max([first_number_to_factorise]+next_numbers_to_factorise)
 
-print number_to_factorise
-print factors
-print "Time taken: {} s\n".format(round(time_taken,2))
+primes = primes_up_to_root(max_number_to_factorise)
 
-targets = [35432488, 806095675586097, 7405814774826, 379065191139531]
+factors = factorise(first_number_to_factorise,primes)
+
+print first_number_to_factorise
+print factors, "\n"
+
 target_factors = []
 
-for n in targets:
-    factors = factorise(n)
+for n in next_numbers_to_factorise:
+    factors = factorise(n,primes)
     target_factors.append(factors)
     print n
     print factors, "\n"
