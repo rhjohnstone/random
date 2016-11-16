@@ -1,14 +1,17 @@
+# this now includes spaces in the alphabet
+
 import string
 import numpy as np
 
 class Vigenere:
     
     def __init__(self):
+        how_many_chars = 26
         self.alphabet = string.ascii_lowercase
         self.exclude = set(string.punctuation+string.digits+" ")
-        self.matrix = np.zeros((26,26))
-        for key_index in xrange(26):
-            self.matrix[key_index,:] = (np.arange(26)+key_index)%26
+        self.matrix = np.zeros((how_many_chars,how_many_chars))
+        for key_index in xrange(how_many_chars):
+            self.matrix[key_index,:] = (np.arange(how_many_chars)+key_index)%how_many_chars
         self.matrix = self.matrix.astype(int)
         
     def decode(self,ciphertext,keyword):
