@@ -6,7 +6,7 @@
 
 import time
 
-power = 7
+power = 9
 N = 10**power
 
 start = time.time()
