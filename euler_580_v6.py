@@ -8,48 +8,67 @@ import time
 import math
 import sys
 
-def reduce_b(b):
-    pseudo_factors = []
-    c_max = int((math.sqrt(0.25+b)-0.5)/2)
-    for c in xrange(1,c_max+1):
-        if ((b-c)%(4*c+1)==0):
-            d = (b-c)/(4*c+1)
-            pseudo_factors += [c,d]
-    return pseudo_factors
+# assuming (4a+1)(4b+1)^2 <= N-1, 0<=a, 1<=b
+def max_b_given_N(N):
+    return int((math.sqrt(N-1)-1.)/4)
     
-def fully_reduce_b(b):
-    all_factors = reduce_b(b)
-    for i in all_factors:
-        temp_factors = reduce_b(i)
-        all_factors += temp_factors
-    #print b, all_factors
-    return all_factors
+def num_multiples_of_4bplus1_less_than_N(b,N):
+    return int(((N-1.)/(4*b+1)**2-1)/4)+1
     
-#b = 28
+def num_hilbert_numbers_less_than_N(N):
+    return (N+2)/4
+    
+# suppose (4a+1)=(4c+1)(4d+1)^2, 0<=c, 1<=d
+def max_d_given_N(N):
+    return int((math.sqrt(N-1)/5-1)/4)
+    
+def max_c_given_d_and_N(d,N):
+    return int(((N-1.)/(25*(4*d+1)**2)-1)/4)
+    
+def is_hilbert(n):
+    if (n<1):
+        return False
+    elif ((n-1)%4==0):
+        return True
+        
+def k_from_c_and_d(c,d):
+    new_hilbert = (4*c+1)*(4*d+1)
+    return (new_hilbert-1)/4
 
-#print fully_reduce_b(b)
-
-#sys.exit()
-
-answers_relative_to_power_of_10 = [0,3,23,232,2324,23265,232710,2327192,23272089,232721183,2327212928,23272130893]
+answers_relative_to_power_of_10 = [0,3,23,232,2324,23265,232710,2327192,23272089,232721183,2327212928,23272130893] # I think
 
 power = 4
 N = 10**power
 
 start = time.time()
 
-num_hilbert_numbers_less_than_N = (N+2)/4
+num_hilberts = num_hilbert_numbers_less_than_N(N)
 print "{} Hilbert numbers less than 10^{}".format(num_hilbert_numbers_less_than_N,power)
 num_non_squarefree = 0
-b_max = int((math.sqrt(N-1)-1.)/4)
-print "b_max =", b_max
+
+# count all multiples, will include duplicates
+# (4a+1)(4b+1)^2
+b_max = max_b_given_N(N)
 for b in xrange(1,b_max+1):
-    num_multiples = int(((N-1.)/(4.*b+1.)**2-1.)/4.)+1
-    num_unique_factors_of_b = len(set(fully_reduce_b(b)))
-    #print "b, count:", b, num_unique_factors_of_b
-    num_non_squarefree += (1-num_unique_factors_of_b)*num_multiples # removing multiply counted squares (not taken scalar multiples into account)
-    #num_non_squarefree += num_multiples
-answer = num_hilbert_numbers_less_than_N - num_non_squarefree
+    num_multiples = num_multiples_of_4bplus1_less_than_N(b,N)
+    num_non_squarefree += num_multiples
+
+# (4a+1) = (4c+1)(4d+1)^2
+num_repeats = 0
+d_max = max_d_given_N(N)
+for d in xrange(1,d_max+1):
+    c_max = max_c_given_d_and_N(d,N)
+    for c in xrange(c_max+1):
+        n = (4*c+1)*(4*d+1)**2
+        if is_hilbert(n):
+            print c,d,n
+            #k = k_from_c_and_d(c,d)
+            num_repeats += 1
+            
+# (4b+1)^2 = k^2(4e+1)^2 = (k(4e+1))^2
+
+        
+answer = num_hilberts - num_non_squarefree + num_repeats
 tt = time.time()-start
 
 print "\nTotal less than 10^{}:".format(power), answer
