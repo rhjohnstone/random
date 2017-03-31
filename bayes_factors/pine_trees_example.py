@@ -21,6 +21,9 @@ npr.seed(seed)
 
 
 def log_data_likelihood(y, explan, explan_bar, params, num_pts, t, pi_bit):
+    """
+    compute log likelihood of data 
+    """
     # type: (object, object, object, object, object, object) -> object
     if params[-1] <= 0:
         print params
