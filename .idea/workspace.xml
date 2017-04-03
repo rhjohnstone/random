@@ -2,12 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="40f60fb1-e54d-49ed-9c81-a125b3531990" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bayes_factors/draw_pp_gif.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bayes_factors/plot_power_posteriors.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/bayes_factors/what.txt" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bayes_factors/compute_bayes_factors.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bayes_factors/pine_trees_setup.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bayes_factors/output_chains/model_1/model_1_temp_0.00411522633745_chain.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bayes_factors/output_chains/model_1/model_1_temp_0.0_chain.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bayes_factors/output_chains/model_1/model_1_temp_0.131687242798_chain.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bayes_factors/output_chains/model_1/model_1_temp_1.0_chain.txt" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bayes_factors/draw_pp_gif.py" afterPath="$PROJECT_DIR$/bayes_factors/draw_pp_gif.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bayes_factors/pine_trees_example.py" afterPath="$PROJECT_DIR$/bayes_factors/pine_trees_example.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flip_tree.py" afterPath="$PROJECT_DIR$/flip_tree.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ols.py" afterPath="$PROJECT_DIR$/ols.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,8 +28,20 @@
       <file leaf-file-name="pine_trees_example.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bayes_factors/pine_trees_example.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="82" column="28" lean-forward="false" selection-start-line="82" selection-start-column="28" selection-end-line="82" selection-end-column="28" />
+            <state relative-caret-position="-2358">
+              <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="47" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pine_trees_setup.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bayes_factors/pine_trees_setup.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="610">
+              <caret line="42" column="56" lean-forward="false" selection-start-line="42" selection-start-column="56" selection-end-line="42" selection-end-column="56" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -38,7 +53,7 @@
         <entry file="file://$PROJECT_DIR$/bayes_factors/plot_power_posteriors.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="394">
-              <caret line="67" column="71" lean-forward="true" selection-start-line="67" selection-start-column="71" selection-end-line="67" selection-end-column="71" />
+              <caret line="67" column="71" lean-forward="false" selection-start-line="67" selection-start-column="71" selection-end-line="67" selection-end-column="71" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -46,13 +61,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="draw_pp_gif.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="draw_pp_gif.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bayes_factors/draw_pp_gif.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="87" column="57" lean-forward="false" selection-start-line="87" selection-start-column="57" selection-end-line="87" selection-end-column="57" />
+            <state relative-caret-position="198">
+              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#0#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="compute_bayes_factors.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/bayes_factors/compute_bayes_factors.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="72">
+              <caret line="4" column="14" lean-forward="false" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -70,6 +97,12 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>burn</find>
+      <find>ch</find>
+      <find>log_data_likelihood</find>
+      <find>chains</find>
+      <find>define_chain_file</find>
+      <find>chain_dir</find>
+      <find>chains_dir</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -80,9 +113,11 @@
       <list>
         <option value="$PROJECT_DIR$/ols.py" />
         <option value="$PROJECT_DIR$/flip_tree.py" />
-        <option value="$PROJECT_DIR$/bayes_factors/pine_trees_example.py" />
         <option value="$PROJECT_DIR$/bayes_factors/plot_power_posteriors.py" />
         <option value="$PROJECT_DIR$/bayes_factors/draw_pp_gif.py" />
+        <option value="$PROJECT_DIR$/bayes_factors/pine_trees_example.py" />
+        <option value="$PROJECT_DIR$/bayes_factors/pine_trees_setup.py" />
+        <option value="$PROJECT_DIR$/bayes_factors/compute_bayes_factors.py" />
       </list>
     </option>
   </component>
@@ -143,24 +178,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Python" />
   </component>
-  <component name="RunManager" selected="Python.draw_pp_gif">
-    <configuration default="false" name="ols" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="random" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ols.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.compute_bayes_factors">
     <configuration default="false" name="flip_tree" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -208,6 +226,40 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="random" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bayes_factors/draw_pp_gif.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="compute_bayes_factors" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bayes_factors" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="random" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bayes_factors/compute_bayes_factors.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="pine_trees_setup" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bayes_factors" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="random" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bayes_factors/pine_trees_setup.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -346,18 +398,20 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <list size="4">
-      <item index="0" class="java.lang.String" itemvalue="Python.ols" />
-      <item index="1" class="java.lang.String" itemvalue="Python.flip_tree" />
-      <item index="2" class="java.lang.String" itemvalue="Python.plot_power_posteriors" />
-      <item index="3" class="java.lang.String" itemvalue="Python.draw_pp_gif" />
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Python.flip_tree" />
+      <item index="1" class="java.lang.String" itemvalue="Python.plot_power_posteriors" />
+      <item index="2" class="java.lang.String" itemvalue="Python.draw_pp_gif" />
+      <item index="3" class="java.lang.String" itemvalue="Python.compute_bayes_factors" />
+      <item index="4" class="java.lang.String" itemvalue="Python.pine_trees_setup" />
     </list>
     <recent_temporary>
-      <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Python.draw_pp_gif" />
-        <item index="1" class="java.lang.String" itemvalue="Python.plot_power_posteriors" />
-        <item index="2" class="java.lang.String" itemvalue="Python.flip_tree" />
-        <item index="3" class="java.lang.String" itemvalue="Python.ols" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.compute_bayes_factors" />
+        <item index="1" class="java.lang.String" itemvalue="Python.pine_trees_setup" />
+        <item index="2" class="java.lang.String" itemvalue="Python.draw_pp_gif" />
+        <item index="3" class="java.lang.String" itemvalue="Python.plot_power_posteriors" />
+        <item index="4" class="java.lang.String" itemvalue="Python.flip_tree" />
       </list>
     </recent_temporary>
   </component>
@@ -381,9 +435,10 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15687332" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32925585" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31090724" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31090724" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -394,7 +449,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -468,20 +522,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bayes_factors/pine_trees_example.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="82" column="28" lean-forward="false" selection-start-line="82" selection-start-column="28" selection-end-line="82" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bayes_factors/plot_power_posteriors.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="394">
-          <caret line="67" column="71" lean-forward="true" selection-start-line="67" selection-start-column="71" selection-end-line="67" selection-end-column="71" />
+          <caret line="67" column="71" lean-forward="false" selection-start-line="67" selection-start-column="71" selection-end-line="67" selection-end-column="71" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -490,10 +534,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bayes_factors/draw_pp_gif.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="87" column="57" lean-forward="false" selection-start-line="87" selection-start-column="57" selection-end-line="87" selection-end-column="57" />
+        <state relative-caret-position="198">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bayes_factors/pine_trees_example.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2358">
+          <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bayes_factors/pine_trees_setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="610">
+          <caret line="42" column="56" lean-forward="false" selection-start-line="42" selection-start-column="56" selection-end-line="42" selection-end-column="56" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bayes_factors/compute_bayes_factors.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="14" lean-forward="false" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
           </folding>
         </state>
       </provider>

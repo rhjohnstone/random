@@ -1,3 +1,4 @@
+import pine_trees_setup as pt
 import numpy as np
 #import matplotlib
 #matplotlib.use('Agg')
@@ -8,12 +9,11 @@ import scipy.stats as st
 import os
 
 
-def chains_dir(model):
-    return "output_chains/model_{}/".format(model)
+
 
 
 def chain_file(model, temperature):
-    main_dir = chains_dir(model)
+    main_dir = pt.chains_dir(model)
     return main_dir + 'model_{}_temp_{}_chain.txt'.format(model, temperature)
 
 
@@ -37,7 +37,7 @@ elif model == 2:
 else:
     sys.exit("Illegal model number\n")
 
-dir_of_chains = chains_dir(model)
+dir_of_chains = pt.chains_dir(model)
 chains = glob(dir_of_chains+"*.txt")
 temps = [float(c.split("_")[5]) for c in chains]
 temps.sort()

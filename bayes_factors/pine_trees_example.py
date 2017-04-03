@@ -1,3 +1,4 @@
+import pine_trees_setup as pt
 import numpy as np
 import numpy.random as npr
 import matplotlib.pyplot as plt
@@ -17,22 +18,8 @@ start = time()
 
 model = int(sys.argv[1])
 
-seed = model
-npr.seed(seed)
-
-
-def log_data_likelihood(y, explan, explan_bar, params, num_pts, t, pi_bit):
-    """
-    Compute log likelihood of data.
-    Note that pi_bit is a constant, so is not needed for MH, but when we're approximating log(p(y)), we need to include it.
-    Of course, we could just add it on after, but I just left it there so I can reuse the exact same code.
-    """
-    # type: (object, object, object, object, object, object) -> object
-    if params[-1] <= 0:
-        print params
-    temp_1 = 0.5 * num_pts * np.log(params[-1])
-    temp_2 = np.sum((y - params[0] - params[1] * (explan - explan_bar))**2) / (2. * params[-1])
-    return -t * (pi_bit + temp_1 + temp_2)
+#seed = model
+#npr.seed(seed)
 
 
 def log_invgamma_prior(x, a, b):
@@ -50,18 +37,18 @@ def log_target(params, y, explan, explan_bar, num_pts, a, b, params_means, param
     if params[-1] <= 0:
         return -np.inf
     else:
-        return (log_data_likelihood(y, explan, explan_bar, params, num_pts, t, pi_bit)
+        return (pt.log_data_likelihood(y, explan, explan_bar, params, num_pts, t, pi_bit)
                 + log_normal_prior(params[:2], params_means, params_vars)
                 + log_invgamma_prior(params[-1], a, b))
 
 
 # (yi, xi, zi)
-pine_data = np.loadtxt("pine_data.txt")
+pine_data = pt.load_pine_data()
 
 y = pine_data[:,0]
 
 num_pts = len(y)
-pi_bit = 0.5*num_pts*np.log(2*np.pi)
+pi_bit = pt.compute_pi_bit_of_log_likelihood(y)
 
 params_mean = np.array([3000, 185]) # same for both models
 params_vars = np.array([10**6, 10**4]) # independent, so not bothering with covariance matrix
@@ -87,21 +74,20 @@ def approximate_log_likelihood(chain):
     num_its = chain.shape[0]
     log_likelihood_samples = np.zeros(num_its)
     for it in xrange(num_its):
-        log_likelihood_samples[it] = log_data_likelihood(y, explan, explan_bar, chain[it, :num_params], num_pts, 1, pi_bit)
+        log_likelihood_samples[it] = pt.log_data_likelihood(y, explan, explan_bar, chain[it, :num_params], num_pts, 1, pi_bit)
     log_likelihood_mcse = mcmcse.mcse(log_likelihood_samples, method="obm")
     se = log_likelihood_mcse[1][0]
     return np.sum(log_likelihood_samples)/num_its, se
 
 
 def do_mcmc(temperature):#, theta0):
-
-    #print "Starting a chain"
+    print "Starting chain"
 
     #theta_cur = np.copy(theta0)
     theta_cur = 100*np.ones(num_params)
     log_target_cur = log_target(theta_cur, y, explan, explan_bar, num_pts, a, b, params_mean, params_vars, temperature)
 
-    total_iterations = 200000
+    total_iterations = 500000
     thinning = 5
     num_saved = total_iterations / thinning + 1
     burn = num_saved / 4
@@ -116,7 +102,7 @@ def do_mcmc(temperature):#, theta0):
     cov_estimate = np.copy(proposal_cov)
 
     status_when = 1000
-    adapt_when = 100*num_params
+    adapt_when = 1000*num_params
 
     t = 1
     s = 1
@@ -167,21 +153,13 @@ for k in xrange(num_params):
     marginal_axes[k] = marginal_figs[k].add_subplot(111)"""
 
 
-n = 3
+n = 50
 c = 5
 temperatures = (np.arange(n+1.)/n)**c
 
 
-def define_chain_file(model, temperature):
-    chain_dir = 'output_chains/model_{}/'.format(model)
-    if not os.path.isdir(chain_dir):
-        os.makedirs(chain_dir)
-    chain_file = chain_dir + 'model_{}_temp_{}_chain.txt'.format(model, temperature)
-    return chain_file
-
-
 def log_approxn(temperature):
-    chain_file = define_chain_file(model, temperature)
+    chain_file = pt.define_chain_file(model, temperature)
     chain = do_mcmc(temperature)
     np.savetxt(chain_file, chain)
     approx_log_likelihood, se = approximate_log_likelihood(chain)
@@ -201,7 +179,7 @@ def log_model_likelihood():
         #theta0 = np.mean(chain[burn:,:num_params], axis=0)
         log_approxns[i] = approximate_log_likelihood(chain)"""
 
-    num_cores = 1
+    num_cores = 5
     #pool = mp.Pool(num_cores)
     #log_approxns = np.array(pool.map_async(log_approxn,temperatures).get(9999))
     if num_cores==1:
