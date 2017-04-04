@@ -1,8 +1,12 @@
 import pine_trees_setup as pt
 import numpy as np
 from glob import glob
+import itertools as it
 
-num_models = 1
+num_models = 2
+model_pairs = it.combinations(range(1, num_models+1), r=2)
+expectations = {}
+
 num_params = 3
 data = pt.load_pine_data()
 y = data[:, 0]
@@ -26,5 +30,10 @@ for m in xrange(1, num_models+1):
         for it in xrange(num_its):
             total += pt.log_data_likelihood(y, explan, explan_bar, chain[it, :], num_pts, 1, pi_bit)
         log_p_ys[i] = total / num_its
+    expectations[m] = pt.trapezium_rule(temps, log_p_ys)
 
-    print pt.trapezium_rule(temps, log_p_ys)
+for pair in model_pairs:
+    i, j = pair
+    Bij = np.exp(expectations[i]-expectations[j])
+    print "B{}{} = {}".format(i, j, Bij)
+    print "B{}{} = {}".format(j, i, 1./Bij)

@@ -2,8 +2,6 @@ import numpy as np
 import os
 
 
-
-
 def chains_dir(model):
     temp_dir = "output/model_{}/chains/".format(model)
     if not os.path.exists(temp_dir):
