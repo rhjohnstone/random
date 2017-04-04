@@ -2,3 +2,13 @@
 bayes_factors/output/model_1/chains/
 
 bayes_factors/output/model_2/chains/
+
+bayes_factors/dose_response/output/model_1/chains/
+
+bayes_factors/dose_response/output/model_2/chains/
+
+*.pyc
+
+bayes_factors/pine_trees/output/model_1/chains/
+
+bayes_factors/pine_trees/output/model_2/chains/

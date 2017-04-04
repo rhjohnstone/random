@@ -35,5 +35,5 @@ for m in xrange(1, num_models+1):
 for pair in model_pairs:
     i, j = pair
     Bij = np.exp(expectations[i]-expectations[j])
-    print "B{}{} = {}".format(i, j, Bij)
-    print "B{}{} = {}".format(j, i, 1./Bij)
+    print "B_{}{} = {}".format(i, j, Bij)
+    print "B_{}{} = {}".format(j, i, 1./Bij)
