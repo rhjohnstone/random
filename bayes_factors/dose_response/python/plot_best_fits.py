@@ -5,9 +5,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cma
 
+
 def sum_of_square_diffs(params):
     predicted = dr.dose_response_model(concs,params[1],dr.pic50_to_ic50(params[0]))
     return np.sum((responses-predicted)**2)
+
+
+def drug_channel_figs_dir(drug, channel):
+    temp_dir = "../output/{}/{}/figs/".format(drug, channel)
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
+    return temp_dir
+
 
 data_file = "../input/crumb_data.csv"
 dr.setup(data_file)
@@ -15,6 +24,7 @@ dr.setup(data_file)
 drug = "Amitriptyline"
 channel = "Cav1.2"
 num_expts, experiment_numbers, experiments = dr.load_crumb_data(drug, channel)
+figs_dir = drug_channel_figs_dir(drug, channel)
 
 concs = np.array([])
 responses = np.array([])
@@ -53,4 +63,5 @@ ax.plot(concs, responses, 'o', color='orange', ms=10, label="Expt data")
 ax.legend(loc=2)
 ax.set_title("pIC50 = {}, Hill = {}".format(round(pic50,3), round(hill,3)))
 fig.tight_layout()
+fig.savefig(figs_dir+"{}_{}_best_fit.png".format(drug,channel))
 plt.show(block=True)

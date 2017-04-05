@@ -9,11 +9,7 @@ import scipy.stats as st
 import os
 
 
-def define_figs_dir(model, drug, channel):
-    temp_dir = "../output/{}/{}/model_{}/figs/".format(drug, channel, model)
-    if not os.path.exists(temp_dir):
-        os.makedirs(temp_dir)
-    return temp_dir
+
 
 
 model = 2
@@ -27,7 +23,7 @@ chains = glob(dir_of_chains+"*.txt")
 temps = [float(c.split("_")[-2]) for c in chains]
 temps.sort()
 
-figs_dir = define_figs_dir(model, drug, channel)
+figs_dir = dr.define_figs_dir(model, drug, channel)
 
 gif_figs = []
 gif_axs = []

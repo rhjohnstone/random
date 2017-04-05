@@ -22,6 +22,13 @@ def define_chain_file(model, drug, channel, temperature):
     return chain_file
 
 
+def define_figs_dir(model, drug, channel):
+    temp_dir = "../output/{}/{}/model_{}/figs/".format(drug, channel, model)
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
+    return temp_dir
+
+
 def compute_pi_bit_of_log_likelihood(y):
     num_pts = len(y)
     return 0.5 * num_pts * np.log(2 * np.pi)
