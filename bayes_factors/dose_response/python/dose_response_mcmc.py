@@ -105,7 +105,8 @@ n = 2
 c = 5
 temperatures = (np.arange(n+1.)/n)**c
 
-for model in xrange(1,3):
+num_models = 2
+for model in xrange(1,num_models+1):
 
     dr.define_model(model)
 

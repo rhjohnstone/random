@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="40f60fb1-e54d-49ed-9c81-a125b3531990" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/bayes_factors/invgam.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bayes_factors/dose_response/python/doseresponse.py" afterPath="$PROJECT_DIR$/bayes_factors/dose_response/python/doseresponse.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bayes_factors/dose_response/python/draw_pp_gif.py" afterPath="$PROJECT_DIR$/bayes_factors/dose_response/python/draw_pp_gif.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bayes_factors/dose_response/python/plot_best_fits.py" afterPath="$PROJECT_DIR$/bayes_factors/dose_response/python/plot_best_fits.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bayes_factors/dose_response/python/dose_response_mcmc.py" afterPath="$PROJECT_DIR$/bayes_factors/dose_response/python/dose_response_mcmc.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,11 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dose_response_mcmc.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="dose_response_mcmc.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bayes_factors/dose_response/python/dose_response_mcmc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="96" column="65" lean-forward="false" selection-start-line="96" selection-start-column="65" selection-end-line="96" selection-end-column="65" />
+            <state relative-caret-position="369">
+              <caret line="112" column="32" lean-forward="true" selection-start-line="112" selection-start-column="32" selection-end-line="112" selection-end-column="32" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -92,7 +90,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plot_best_fits.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="plot_best_fits.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bayes_factors/dose_response/python/plot_best_fits.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="477">
@@ -144,10 +142,10 @@
         <option value="$PROJECT_DIR$/bayes_factors/compute_bayes_factors.py" />
         <option value="$PROJECT_DIR$/bayes_factors/pine_trees/pine_trees_setup.py" />
         <option value="$PROJECT_DIR$/bayes_factors/dose_response/python/compute_bayes_factors.py" />
-        <option value="$PROJECT_DIR$/bayes_factors/dose_response/python/dose_response_mcmc.py" />
         <option value="$PROJECT_DIR$/bayes_factors/dose_response/python/doseresponse.py" />
         <option value="$PROJECT_DIR$/bayes_factors/dose_response/python/draw_pp_gif.py" />
         <option value="$PROJECT_DIR$/bayes_factors/dose_response/python/plot_best_fits.py" />
+        <option value="$PROJECT_DIR$/bayes_factors/dose_response/python/dose_response_mcmc.py" />
       </list>
     </option>
   </component>
@@ -654,16 +652,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bayes_factors/dose_response/python/dose_response_mcmc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="96" column="65" lean-forward="false" selection-start-line="96" selection-start-column="65" selection-end-line="96" selection-end-column="65" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bayes_factors/dose_response/python/draw_pp_gif.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
@@ -698,6 +686,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="477">
           <caret line="65" column="63" lean-forward="false" selection-start-line="65" selection-start-column="63" selection-end-line="65" selection-end-column="63" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bayes_factors/dose_response/python/dose_response_mcmc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="112" column="32" lean-forward="true" selection-start-line="112" selection-start-column="32" selection-end-line="112" selection-end-column="32" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
