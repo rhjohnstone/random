@@ -14,7 +14,7 @@ def do_mcmc(temperature):#, theta0):
     theta_cur = np.ones(dr.num_params)
     log_target_cur = dr.log_target(responses, concs, theta_cur, num_pts, temperature, pi_bit)
 
-    total_iterations = 100000
+    total_iterations = 20000
     thinning = 5
     num_saved = total_iterations / thinning + 1
     burn = num_saved / 4
@@ -81,13 +81,13 @@ parser.add_argument("-a", "--all", action='store_true', help='run hierarchical M
 args = parser.parse_args()"""#
 
 data_file = "../input/crumb_data.csv"
-#run_all = True
+#run_all = False
 
 dr.setup(data_file)
 #drugs_to_run, channels_to_run = dr.list_drug_channel_options(run_all)
 
-drug = "Amiodarone"
-channel = "hERG"
+drug = "Amitriptyline"
+channel = "Cav1.2"
 num_expts, experiment_numbers, experiments = dr.load_crumb_data(drug, channel)
 
 concs = np.array([])
@@ -114,7 +114,7 @@ for model in xrange(1,3):
 #prior_pdf = st.fisk.pdf(prior_x, c=dr.beta, scale=dr.alpha, loc=0)
 
     for temperature in temperatures:
-        chain_file = dr.define_chain_file(model, temperature)
+        chain_file = dr.define_chain_file(model, drug, channel, temperature)
         chain = do_mcmc(temperature)
         np.savetxt(chain_file, chain)
 

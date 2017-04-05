@@ -10,15 +10,15 @@ sigma_lower = 0.
 sigma_upper = 1000.
 
 
-def chains_dir(model):
-    temp_dir = "../output/model_{}/chains/".format(model)
+def chains_dir(model, drug, channel):
+    temp_dir = "../output/{}/{}/model_{}/chains/".format(drug, channel, model)
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
     return temp_dir
 
 
-def define_chain_file(model, temperature):
-    chain_file = chains_dir(model) + 'model_{}_temp_{}_chain.txt'.format(model, temperature)
+def define_chain_file(model, drug, channel, temperature):
+    chain_file = chains_dir(model, drug, channel) + '{}_{}_model_{}_temp_{}_chain.txt'.format(drug, channel, model, temperature)
     return chain_file
 
 

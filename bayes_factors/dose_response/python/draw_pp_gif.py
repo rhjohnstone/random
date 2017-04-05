@@ -9,8 +9,8 @@ import scipy.stats as st
 import os
 
 
-def define_figs_dir(model):
-    temp_dir = "../output/model_{}/figs/".format(model)
+def define_figs_dir(model, drug, channel):
+    temp_dir = "../output/{}/{}/model_{}/figs/".format(drug, channel, model)
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
     return temp_dir
@@ -19,13 +19,15 @@ def define_figs_dir(model):
 model = 2
 dr.define_model(model)
 
+drug = 'Amitriptyline'
+channel = 'Cav1.2'
 
-dir_of_chains = dr.chains_dir(model)
+dir_of_chains = dr.chains_dir(model, drug, channel)
 chains = glob(dir_of_chains+"*.txt")
 temps = [float(c.split("_")[-2]) for c in chains]
 temps.sort()
 
-figs_dir = define_figs_dir(model)
+figs_dir = define_figs_dir(model, drug, channel)
 
 gif_figs = []
 gif_axs = []
@@ -53,7 +55,7 @@ def update_hist(num, data):
 
 data = []
 for t in temps:
-    chain = np.loadtxt(dr.define_chain_file(model, t), usecols=[0])
+    chain = np.loadtxt(dr.define_chain_file(model, drug, channel, t), usecols=[0])
     data.append(chain)
 
 data_min = np.min(np.array(data))
