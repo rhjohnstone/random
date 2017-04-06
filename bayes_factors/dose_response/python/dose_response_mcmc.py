@@ -14,7 +14,7 @@ def do_mcmc(temperature):#, theta0):
     theta_cur = np.ones(dr.num_params)
     log_target_cur = dr.log_target(responses, concs, theta_cur, num_pts, temperature, pi_bit)
 
-    total_iterations = 20000
+    total_iterations = 500000
     thinning = 5
     num_saved = total_iterations / thinning + 1
     burn = num_saved / 4
@@ -86,8 +86,11 @@ data_file = "../input/crumb_data.csv"
 dr.setup(data_file)
 #drugs_to_run, channels_to_run = dr.list_drug_channel_options(run_all)
 
-drug = "Amitriptyline"
-channel = "Cav1.2"
+#drug = "Amitriptyline"
+#channel = "Cav1.2"
+drug = "Amiodarone"
+channel = "hERG"
+
 num_expts, experiment_numbers, experiments = dr.load_crumb_data(drug, channel)
 
 concs = np.array([])
@@ -101,23 +104,24 @@ pi_bit = dr.compute_pi_bit_of_log_likelihood(responses)
 
 #model = 2  #int(sys.argv[1])
 
-n = 2
-c = 5
+n = 40
+c = 3
 temperatures = (np.arange(n+1.)/n)**c
 
 num_models = 2
-for model in xrange(1,num_models+1):
 
-    dr.define_model(model)
+model = int(sys.argv[1])
+
+dr.define_model(model)
 
 #prior_x = np.linspace(0,2,1001)
 #prior_pdf = st.logistic.pdf(prior_x, loc=dr.mu, scale=dr.s)
 #prior_pdf = st.fisk.pdf(prior_x, c=dr.beta, scale=dr.alpha, loc=0)
 
-    for temperature in temperatures:
-        chain_file = dr.define_chain_file(model, drug, channel, temperature)
-        chain = do_mcmc(temperature)
-        np.savetxt(chain_file, chain)
+for temperature in temperatures:
+    chain_file = dr.define_chain_file(model, drug, channel, temperature)
+    chain = do_mcmc(temperature)
+    np.savetxt(chain_file, chain)
 
 """fig = plt.figure()
 ax = fig.add_subplot(111)
