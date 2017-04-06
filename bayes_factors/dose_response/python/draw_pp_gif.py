@@ -8,10 +8,6 @@ from glob import glob
 import scipy.stats as st
 import os
 
-
-
-
-
 model = 2
 dr.define_model(model)
 
@@ -76,4 +72,4 @@ plt.show()
     axs[i].set_xlabel(labels[i])
     figs[i].tight_layout()"""
 
-plt.close()
+#plt.close()

@@ -4,27 +4,33 @@ import doseresponse as dr
 import matplotlib.pyplot as plt
 import numpy as np
 import cma
+import os
 
 
-def sum_of_square_diffs(params):
-    predicted = dr.dose_response_model(concs,params[1],dr.pic50_to_ic50(params[0]))
+def sum_of_square_diffs(params, model):
+    if model == 1:
+        pic50 = params[0]
+        hill = 1
+    elif model == 2:
+        pic50, hill = params
+    predicted = dr.dose_response_model(concs,hill,dr.pic50_to_ic50(pic50))
     return np.sum((responses-predicted)**2)
 
 
-def drug_channel_figs_dir(drug, channel):
-    temp_dir = "../output/{}/{}/figs/".format(drug, channel)
-    if not os.path.exists(temp_dir):
-        os.makedirs(temp_dir)
-    return temp_dir
-
+model = 2
+dr.define_model(model)
 
 data_file = "../input/crumb_data.csv"
 dr.setup(data_file)
 
 drug = "Amitriptyline"
 channel = "Cav1.2"
+#drug = "Amiodarone"
+#channel = "hERG"
+
+
 num_expts, experiment_numbers, experiments = dr.load_crumb_data(drug, channel)
-figs_dir = drug_channel_figs_dir(drug, channel)
+figs_dir = dr.drug_channel_figs_dir(drug, channel)
 
 concs = np.array([])
 responses = np.array([])
@@ -32,36 +38,40 @@ for i in xrange(num_expts):
     concs = np.concatenate((concs, experiments[i][:, 0]))
     responses = np.concatenate((responses, experiments[i][:, 1]))
 
-num_params = 2
-x0 = np.ones(num_params)
+x0 = np.ones(2)
 sigma0 = 0.1
 opts = cma.CMAOptions()
 es = cma.CMAEvolutionStrategy(x0, sigma0, opts)
 while not es.stop():
     X = es.ask()
-    f_vals = [sum_of_square_diffs(x) for x in X]
+    f_vals = [sum_of_square_diffs(x, model) for x in X]
     es.tell(X, f_vals)
     es.disp()
 res = es.result()
 pic50, hill = res[0]
+if model == 1:
+    hill = 1
 
 conc_min = np.min(concs)
 conc_max = np.max(concs)
 
-num_pts = 1001
-x_range = np.logspace(int(np.log10(conc_min))-1, int(np.log10(conc_max))+1, num_pts)
+num_pts = 201
+x_range = np.logspace(int(np.log10(conc_min))-1, int(np.log10(conc_max))+2, num_pts)
 predicted = dr.dose_response_model(x_range, hill, dr.pic50_to_ic50(pic50))
 
-fig = plt.figure()
+fsize = 14
+
+fig = plt.figure(figsize=(5,4))
 ax = fig.add_subplot(111)
 ax.grid()
 ax.set_xscale('log')
-ax.set_ylabel(r"% {} block".format(channel))
-ax.set_xlabel(r"{} concentration ($\mu$M)".format(drug))
+ax.set_ylabel(r"% {} block".format(channel),fontsize=fsize)
+ax.set_xlabel(r"{} concentration ($\mu$M)".format(drug),fontsize=fsize)
 ax.plot(x_range, predicted, color='blue', lw=2, label="Best fit")
 ax.plot(concs, responses, 'o', color='orange', ms=10, label="Expt data")
 ax.legend(loc=2)
-ax.set_title("pIC50 = {}, Hill = {}".format(round(pic50,3), round(hill,3)))
+ax.set_title("Model {}, pIC50 = {}, Hill = {}".format(model, round(pic50,3), round(hill,3)),fontsize=fsize)
 fig.tight_layout()
-fig.savefig(figs_dir+"{}_{}_best_fit.png".format(drug,channel))
+fig.savefig(figs_dir+"{}_{}_model_{}_best_fit.png".format(drug,channel,model))
+fig.savefig(figs_dir+"{}_{}_model_{}_best_fit.pdf".format(drug,channel,model))
 plt.show(block=True)

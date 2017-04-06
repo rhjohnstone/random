@@ -13,8 +13,12 @@ data_file = "../input/crumb_data.csv"
 dr.setup(data_file)
 #drugs_to_run, channels_to_run = dr.list_drug_channel_options(run_all)
 
-drug = 'Amitriptyline'
-channel = 'Cav1.2'
+#drug = 'Amitriptyline'
+#channel = 'Cav1.2'
+
+drug = 'Amiodarone'
+channel = 'hERG'
+
 num_expts, experiment_numbers, experiments = dr.load_crumb_data(drug, channel)
 
 concs = np.array([])
@@ -22,8 +26,6 @@ responses = np.array([])
 for i in xrange(num_expts):
     concs = np.concatenate((concs, experiments[i][:, 0]))
     responses = np.concatenate((responses, experiments[i][:, 1]))
-
-
 
 pi_bit = dr.compute_pi_bit_of_log_likelihood(responses)
 num_pts = len(responses)
