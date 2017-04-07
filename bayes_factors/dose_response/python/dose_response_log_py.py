@@ -34,6 +34,11 @@ def approx_log_py(temperature):
     status_when = 40000
     adapt_when = 1000*dr.num_params
 
+    if temperature == 1.:
+        chain_file = dr.define_chain_file(model, drug, channel, temperature)
+        chain = np.zeros((num_saved, dr.num_params+1))
+        chain[0, :] = np.concatenate((theta_cur, [log_target_cur]))
+
     total = 0.
 
     saved_so_far = 0
@@ -63,7 +68,8 @@ def approx_log_py(temperature):
         acceptance = (t-1.)/t * acceptance + 1./t * accepted
         if t % thinning == 0:
             saved_so_far += 1
-            #chain[t/thinning,:] = np.concatenate((theta_cur, [log_target_cur]))
+            if temperature == 1.:
+                chain[t/thinning, :] = np.concatenate((theta_cur, [log_target_cur]))
             if saved_so_far >= burn:
                 total += dr.log_data_likelihood(responses, concs, theta_cur, num_pts, 1, pi_bit)
         if t % status_when == 0:
@@ -82,6 +88,8 @@ def approx_log_py(temperature):
             s += 1
         t += 1
     # discard burn-in before saving chain, just to save space mostly
+    if temperature == 1.:
+        np.savetxt(chain_file, chain[burn:, :])
     return total / (saved_so_far - burn + 1.)
 
 
@@ -99,7 +107,7 @@ drugs_to_run, channels_to_run = dr.list_drug_channel_options(run_all)
 
 
 def compute_log_pys(drug_channel):
-    global responses, concs, num_pts, pi_bit
+    global responses, concs, num_pts, pi_bit, model, drug, channel
 
     print drug_channel
 
@@ -140,7 +148,7 @@ def compute_log_pys(drug_channel):
 
         np.savetxt(log_py_file, log_pys)
         print "\n", log_pys
-        return None
+    return None
 
 num_cores = 10
 pool = mp.Pool(num_cores)

@@ -152,7 +152,6 @@ def define_model(model):
         labels = [r"$PIC_{50}$", r"$Hill", r"$\sigma^2$"]
         prior_xs = [np.linspace(pic50_lower,pic50_upper,num_prior_pts), np.linspace(0,6,num_prior_pts), np.linspace(sigma_lower,sigma_upper,num_prior_pts)]
         prior_pdfs = [st.logistic.pdf(prior_xs[0],loc=mu,scale=s), st.fisk.pdf(prior_xs[1],c=beta,scale=alpha), np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
-    #theta0 = np.ones(num_params-1)
 
 
 def log_hill_log_logistic_likelihood(x):
