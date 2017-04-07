@@ -47,6 +47,13 @@ def ic50_to_pic50(ic50):  # IC50 in uM
     return 6 - np.log10(ic50)
 
 
+def define_log_py_file(model, drug, channel):
+    temp_dir = "../output/{}/{}/model_{}/log_pys/".format(drug, channel, model)
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
+    return temp_dir+"{}_{}_model_{}_log_pys.txt".format(drug, channel, model)
+
+
 def log_data_likelihood_model_1(y, concs, params, num_pts, t, pi_bit):
     """
     Compute log likelihood of data.

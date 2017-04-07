@@ -23,10 +23,10 @@ dr.define_model(model)
 data_file = "../input/crumb_data.csv"
 dr.setup(data_file)
 
-drug = "Amitriptyline"
-channel = "Cav1.2"
-#drug = "Amiodarone"
-#channel = "hERG"
+#drug = "Amitriptyline"
+#channel = "Cav1.2"
+drug = "Amiodarone"
+channel = "hERG"
 
 
 num_expts, experiment_numbers, experiments = dr.load_crumb_data(drug, channel)

@@ -13,11 +13,11 @@ data_file = "../input/crumb_data.csv"
 dr.setup(data_file)
 #drugs_to_run, channels_to_run = dr.list_drug_channel_options(run_all)
 
-#drug = 'Amitriptyline'
-#channel = 'Cav1.2'
+drug = 'Amitriptyline'
+channel = 'Cav1.2'
 
-drug = 'Amiodarone'
-channel = 'hERG'
+#drug = 'Amiodarone'
+#channel = 'hERG'
 
 num_expts, experiment_numbers, experiments = dr.load_crumb_data(drug, channel)
 
@@ -58,5 +58,6 @@ for m in xrange(1, num_models+1):
 for pair in model_pairs:
     i, j = pair
     Bij = np.exp(expectations[i]-expectations[j])
+    print "{} + {}".format(drug,channel)
     print "B_{}{} = {}".format(i, j, Bij)
     print "B_{}{} = {}".format(j, i, 1./Bij)
