@@ -14,8 +14,11 @@ def sum_of_square_diffs(params, model):
         hill = 1
     elif model == 2:
         pic50, hill = params
-    predicted = dr.dose_response_model(concs,hill,dr.pic50_to_ic50(pic50))
-    return np.sum((responses-predicted)**2)
+    if hill <= 0 or pic50 <= -2:
+        return 1e9
+    else:
+        predicted = dr.dose_response_model(concs, hill, dr.pic50_to_ic50(pic50))
+        return np.sum((responses-predicted)**2)
 
 
 
