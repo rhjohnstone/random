@@ -37,7 +37,9 @@ if not os.path.exists(all_figs_dir):
 
 num_models = 2
 
+
 def do_plot(drug_channel):
+    global concs, responses
 
     for model in xrange(1, num_models+1):
 
