@@ -13,7 +13,7 @@ import itertools as it
    That would take way too much space, for all 210 cases."""
 
 
-def approx_log_py(temperature):
+def approx_log_py(responses, concs, num_pts, temperature, pi_bit, model, drug, channel):
     print "Starting chain"
 
     #theta_cur = np.copy(theta0)
@@ -107,7 +107,6 @@ drugs_to_run, channels_to_run = dr.list_drug_channel_options(run_all)
 
 
 def compute_log_pys(drug_channel):
-    global responses, concs, num_pts, pi_bit, model, drug, channel
 
     print drug_channel
 
@@ -143,7 +142,7 @@ def compute_log_pys(drug_channel):
             outfile.write("# temperature, log(p(y|t))\n")
 
         for i, temperature in enumerate(temperatures):
-            log_py = approx_log_py(temperature)
+            log_py = approx_log_py(responses, concs, num_pts, temperature, pi_bit, model, drug, channel)
             log_pys[i, 1] = log_py
 
         np.savetxt(log_py_file, log_pys)
