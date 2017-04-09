@@ -150,7 +150,7 @@ def compute_log_pys(drug_channel):
         print "\n", log_pys
     return None
 
-num_cores = 10
+num_cores = 5
 pool = mp.Pool(num_cores)
 do_all_log_pys = pool.map_async(compute_log_pys, it.product(drugs_to_run, channels_to_run)).get(9999999999)
 pool.close()
