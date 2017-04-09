@@ -120,6 +120,8 @@ def compute_log_pys(drug_channel):
         concs = np.concatenate((concs, experiments[i][:, 0]))
         responses = np.concatenate((responses, experiments[i][:, 1]))
 
+    print "responses:", responses
+
     num_pts = len(responses)
     pi_bit = dr.compute_pi_bit_of_log_likelihood(responses)
 
