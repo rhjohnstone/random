@@ -110,6 +110,10 @@ def compute_log_pys(drug_channel):
 
     print drug_channel
 
+    seed = drugs_channels.index(drug_channel)
+    print "seed =", seed
+    npr.seed(seed)
+
     drug, channel = drug_channel
 
     num_expts, experiment_numbers, experiments = dr.load_crumb_data(drug, channel)
@@ -151,7 +155,14 @@ def compute_log_pys(drug_channel):
         print "\n", log_pys
     return None
 
-num_cores = 5
-pool = mp.Pool(num_cores)
-do_all_log_pys = pool.map_async(compute_log_pys, it.product(drugs_to_run, channels_to_run)).get(9999999999)
-pool.close()
+num_cores = 6
+
+drugs_channels = list(it.product(drugs_to_run, channels_to_run))
+
+if num_cores > 1:
+    pool = mp.Pool(num_cores)
+    do_all_log_pys = pool.map_async(compute_log_pys, drugs_channels).get(9999999999)
+    pool.close()
+else:
+    for drug_channel in drugs_channels:
+        compute_log_pys(drug_channel)
