@@ -7,7 +7,7 @@ beta = 2.
 alpha = ((beta+1.)/(beta-1.))**(1./beta)  # for mode at 1
 mu = 6.
 s = 1.
-sigma_lower = 0.
+sigma_lower = 1e-3
 sigma_upper = 1000.
 
 
