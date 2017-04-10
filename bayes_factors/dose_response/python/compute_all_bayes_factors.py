@@ -41,12 +41,15 @@ def compute_log_pys(drug_channel):
 
     return None
 
-"""for drug_channel in it.product(drugs_to_run, channels_to_run):
+for drug_channel in it.product(drugs_to_run, channels_to_run):
     try:
+        print "\n"
+        print drug_channel
         compute_log_pys(drug_channel)
+        print "\n"
     except:
         print "no log_pys for", drug_channel
-        continue"""
+        continue
 
-drug_channel = ('Amiodarone', 'hERG')
-compute_log_pys(drug_channel)
+"""drug_channel = ('Amiodarone', 'hERG')
+compute_log_pys(drug_channel)"""
