@@ -5,8 +5,8 @@ import scipy.stats as st
 
 beta = 2.
 alpha = ((beta+1.)/(beta-1.))**(1./beta)  # for mode at 1
-mu = 6.
-s = 1.
+mu = 4.
+s = 2.
 sigma_lower = 1e-3
 sigma_upper = 1000.
 
@@ -134,24 +134,32 @@ def define_model(model):
     """Choose whether to fix Hill = 1 (#1) or allow Hill to vary (#2)"""
     global log_data_likelihood, log_priors, num_params, file_names, labels, prior_xs, prior_pdfs
     num_prior_pts = 1001
-    pic50_lower = -2.
+    pic50_lower = -4.
     pic50_upper = 14.
+    hill_lower = 0.
+    hill_upper = 6.
     if model == 1:
         num_params = 2
         log_data_likelihood = log_data_likelihood_model_1
         log_priors = log_priors_model_1
         file_names = ["pic50", "sigma_sq"]
         labels = [r"$PIC_{50}$", r"$\sigma^2$"]
-        prior_xs = [np.linspace(pic50_lower,pic50_upper,num_prior_pts), np.linspace(sigma_lower,sigma_upper,num_prior_pts)]
-        prior_pdfs = [st.logistic.pdf(prior_xs[0],loc=mu,scale=s), np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
+        prior_xs = [np.linspace(pic50_lower, pic50_upper, num_prior_pts),
+                    np.linspace(sigma_lower,sigma_upper,num_prior_pts)]
+        prior_pdfs = [st.logistic.pdf(prior_xs[0], loc=mu, scale=s),
+                      np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
     elif model == 2:
         num_params = 3
         log_data_likelihood = log_data_likelihood_model_2
         log_priors = log_priors_model_2
         file_names = ["pic50", "hill", "sigma_sq"]
-        labels = [r"$PIC_{50}$", r"$Hill", r"$\sigma^2$"]
-        prior_xs = [np.linspace(pic50_lower,pic50_upper,num_prior_pts), np.linspace(0,6,num_prior_pts), np.linspace(sigma_lower,sigma_upper,num_prior_pts)]
-        prior_pdfs = [st.logistic.pdf(prior_xs[0],loc=mu,scale=s), st.fisk.pdf(prior_xs[1],c=beta,scale=alpha), np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
+        labels = [r"$PIC_{50}$", r"$Hill$", r"$\sigma^2$"]
+        prior_xs = [np.linspace(pic50_lower, pic50_upper, num_prior_pts),
+                    np.linspace(hill_lower, hill_upper, num_prior_pts),
+                    np.linspace(sigma_lower,sigma_upper,num_prior_pts)]
+        prior_pdfs = [st.logistic.pdf(prior_xs[0],loc=mu,scale=s),
+                      st.fisk.pdf(prior_xs[1],c=beta,scale=alpha),
+                      np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
 
 
 def log_hill_log_logistic_likelihood(x):

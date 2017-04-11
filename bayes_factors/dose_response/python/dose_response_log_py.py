@@ -155,10 +155,10 @@ def compute_log_pys(drug_channel):
         print "\n", log_pys
     return None
 
-num_cores = 9
+num_cores = 1
 
 #drugs_channels = list(it.product(drugs_to_run, channels_to_run))
-drugs_channels = [('Amiodarone', 'hERG')]
+drugs_channels = [('Lopinavir', 'Kir2.1')]
 
 if num_cores > 1:
     pool = mp.Pool(num_cores)
