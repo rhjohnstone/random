@@ -1,6 +1,7 @@
 import doseresponse as dr
 import numpy as np
 import itertools as it
+import os
 
 data_file = "../input/crumb_data.csv"
 run_all = True
