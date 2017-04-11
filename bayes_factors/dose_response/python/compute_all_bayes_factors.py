@@ -8,6 +8,15 @@ run_all = True
 dr.setup(data_file)
 drugs_to_run, channels_to_run = dr.list_drug_channel_options(run_all)
 
+output_dir = "../output/bayes_factors/"
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+bf_file = output_dir + "bayes_factors.txt"
+with open(bf_file, "w") as outfile:
+    outfile.write("# Bayes factors\n")
+    outfile.write("# M1. fixed Hill = 1, varying pIC50\n")
+    outfile.write("# M2. varying pIC50 and Hill\n\n")
+
 def compute_log_pys(drug_channel):
     global responses, concs, num_pts, pi_bit
 
@@ -36,16 +45,19 @@ def compute_log_pys(drug_channel):
         quads[model] = quadrature
 
     B_21 = np.exp(quads[2]-quads[1])
-    print "B_21 =", B_21
-    print "B_12 =", 1./B_21
+    B_12 = 1./B_21
 
-    return None
+    return B_21, B_12
 
 for drug_channel in it.product(drugs_to_run, channels_to_run):
     try:
         print "\n"
         print drug_channel
-        compute_log_pys(drug_channel)
+        B_21, B_12 = compute_log_pys(drug_channel)
+        with open(bf_file, "a") as outfile:
+            outfile.write("{}\n".format(drug_channel))
+            outfile.write("B_21 = {}\n".format(B_21))
+            outfile.write("B_12 = {}\n\n".format(B_12))
         print "\n"
     except:
         print "no log_pys for", drug_channel

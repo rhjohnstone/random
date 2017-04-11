@@ -2,6 +2,7 @@ import doseresponse as dr
 import numpy as np
 from glob import glob
 import itertools as it
+import os
 
 num_models = 2
 model_pairs = it.combinations(range(1, num_models+1), r=2)
@@ -9,6 +10,8 @@ expectations = {}
 
 data_file = "../input/crumb_data.csv"
 #run_all = True
+
+
 
 dr.setup(data_file)
 #drugs_to_run, channels_to_run = dr.list_drug_channel_options(run_all)
