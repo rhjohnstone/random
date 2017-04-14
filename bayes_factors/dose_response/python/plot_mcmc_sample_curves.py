@@ -89,7 +89,10 @@ def plot_mcmc_samples(drug_channel):
     #fig.savefig(figs_dir+'{}_{}_mcmc_samples.pdf'.format(drug,channel,model))
     plt.close()
 
-for drug_channel in it.product(drugs_to_run, channels_to_run):
+#drugs_channels = [('Lopinavir', 'Kir2.1')]
+drugs_channels = it.product(drugs_to_run, channels_to_run)
+
+for drug_channel in drugs_channels:
     try:
         plot_mcmc_samples(drug_channel)
     except:

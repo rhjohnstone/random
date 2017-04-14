@@ -16,7 +16,6 @@ import itertools as it
 def approx_log_py(responses, concs, num_pts, temperature, pi_bit, model, drug, channel):
     print "Starting chain"
 
-    #theta_cur = np.copy(theta0)
     theta_cur = np.ones(dr.num_params)
     log_target_cur = dr.log_target(responses, concs, theta_cur, num_pts, temperature, pi_bit)
 
@@ -29,7 +28,7 @@ def approx_log_py(responses, concs, num_pts, temperature, pi_bit, model, drug, c
     acceptance = 0.
 
     mean_estimate = np.copy(theta_cur)
-    cov_estimate = np.eye(dr.num_params)
+    cov_estimate = 10.*np.eye(dr.num_params)
 
     status_when = 40000
     adapt_when = 1000*dr.num_params
@@ -95,8 +94,15 @@ def approx_log_py(responses, concs, num_pts, temperature, pi_bit, model, drug, c
 
 #parser = argparse.ArgumentParser()
 #requiredNamed = parser.add_argument_group('required arguments')
-#requiredNamed.add_argument("--data-file",type=str, help="csv file from which to read in data, in same format as provided crumb_data.csv", required=True)
-#parser.add_argument("-a", "--all", action='store_true', help='run hierarchical MCMC on all drugs and channels', default=False)
+#requiredNamed.add_argument("--data-file",
+# type=str,
+# help="csv file from which to read in data, in same format as provided crumb_data.csv",
+# required=True)
+#parser.add_argument("-a",
+# "--all",
+# action='store_true',
+# help='run hierarchical MCMC on all drugs and channels',
+# default=False)
 #args = parser.parse_args()
 
 data_file = "../input/crumb_data.csv"
@@ -155,10 +161,10 @@ def compute_log_pys(drug_channel):
         print "\n", log_pys
     return None
 
-num_cores = 1
+num_cores = 2
 
 #drugs_channels = list(it.product(drugs_to_run, channels_to_run))
-drugs_channels = [('Lopinavir', 'Kir2.1')]
+drugs_channels = [('Lopinavir', 'Kir2.1'), ('Amiodarone', 'hERG')]
 
 if num_cores > 1:
     pool = mp.Pool(num_cores)

@@ -50,7 +50,10 @@ def compute_log_pys(drug_channel):
 
     return B_21, B_12
 
-for drug_channel in it.product(drugs_to_run, channels_to_run):
+#drugs_channels = [('Lopinavir', 'Kir2.1')]
+drugs_channels = it.product(drugs_to_run, channels_to_run)
+
+for drug_channel in drugs_channels:
     try:
         print "\n"
         print drug_channel
@@ -63,6 +66,3 @@ for drug_channel in it.product(drugs_to_run, channels_to_run):
     except:
         print "no log_pys for", drug_channel
         continue
-
-"""drug_channel = ('Amiodarone', 'hERG')
-compute_log_pys(drug_channel)"""

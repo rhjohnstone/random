@@ -9,6 +9,11 @@ mu = 4.
 s = 2.
 sigma_lower = 1e-3
 sigma_upper = 1000.
+pic50_exp_scale = 1./0.2
+pic50_exp_lower = -2.
+hill_uniform_lower = 0.
+hill_uniform_upper = 10.
+log_hill_uniform_const = -np.log(hill_uniform_upper-hill_uniform_lower)
 
 
 def chains_dir(model, drug, channel):
@@ -143,22 +148,32 @@ def define_model(model):
         log_data_likelihood = log_data_likelihood_model_1
         log_priors = log_priors_model_1
         file_names = ["pic50", "sigma_sq"]
-        labels = [r"$PIC_{50}$", r"$\sigma^2$"]
-        prior_xs = [np.linspace(pic50_lower, pic50_upper, num_prior_pts),
-                    np.linspace(sigma_lower,sigma_upper,num_prior_pts)]
-        prior_pdfs = [st.logistic.pdf(prior_xs[0], loc=mu, scale=s),
+        labels = [r"$pIC_{50}$", r"$\sigma^2$"]
+        #prior_xs = [np.linspace(pic50_lower, pic50_upper, num_prior_pts),
+        #            np.linspace(sigma_lower,sigma_upper,num_prior_pts)]
+        prior_xs = [np.linspace(pic50_exp_lower, pic50_exp_lower+14, num_prior_pts),
+                    np.linspace(sigma_lower, sigma_upper, num_prior_pts)]
+        #prior_pdfs = [st.logistic.pdf(prior_xs[0], loc=mu, scale=s),
+        #              np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
+        prior_pdfs = [st.expon.pdf(prior_xs[0], loc=pic50_exp_lower, scale=pic50_exp_scale),
                       np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
     elif model == 2:
         num_params = 3
         log_data_likelihood = log_data_likelihood_model_2
         log_priors = log_priors_model_2
         file_names = ["pic50", "hill", "sigma_sq"]
-        labels = [r"$PIC_{50}$", r"$Hill$", r"$\sigma^2$"]
-        prior_xs = [np.linspace(pic50_lower, pic50_upper, num_prior_pts),
-                    np.linspace(hill_lower, hill_upper, num_prior_pts),
-                    np.linspace(sigma_lower,sigma_upper,num_prior_pts)]
-        prior_pdfs = [st.logistic.pdf(prior_xs[0],loc=mu,scale=s),
-                      st.fisk.pdf(prior_xs[1],c=beta,scale=alpha),
+        labels = [r"$pIC_{50}$", r"$Hill$", r"$\sigma^2$"]
+        #prior_xs = [np.linspace(pic50_lower, pic50_upper, num_prior_pts),
+        #            np.linspace(hill_lower, hill_upper, num_prior_pts),
+        #            np.linspace(sigma_lower,sigma_upper,num_prior_pts)]
+        prior_xs = [np.linspace(pic50_exp_lower, pic50_exp_lower+14, num_prior_pts),
+                    np.linspace(hill_uniform_lower, hill_uniform_upper, num_prior_pts),
+                    np.linspace(sigma_lower, sigma_upper, num_prior_pts)]
+        #prior_pdfs = [st.logistic.pdf(prior_xs[0],loc=mu,scale=s),
+        #              st.fisk.pdf(prior_xs[1],c=beta,scale=alpha),
+        #              np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
+        prior_pdfs = [st.expon.pdf(prior_xs[0], loc=pic50_exp_lower, scale=pic50_exp_scale),
+                      np.ones(num_prior_pts) / (1. * hill_uniform_upper - hill_uniform_lower),
                       np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
 
 
@@ -170,12 +185,27 @@ def log_pic50_logistic_likelihood(x):
     return -x/s - 2.*np.log(1 + np.exp((mu-x)/s))
 
 
+def log_pic50_exponential(x):
+    """Omitted constant bits like log(scale) and scale*lower"""
+    if x < pic50_exp_lower:
+        return -np.inf
+    else:
+        return -1./pic50_exp_scale*x
+
+
+def log_hill_uniform(x):
+    if (x < hill_uniform_lower) or (x > hill_uniform_upper):
+        return -np.inf
+    else:
+        return log_hill_uniform_const
+
+
 def log_priors_model_1(params):
     pic50, sigma_sq = params
     if sigma_sq <= sigma_lower or sigma_sq > sigma_upper:
         return -np.inf
     else:
-        return log_pic50_logistic_likelihood(pic50)
+        return log_pic50_exponential(pic50)
 
 
 def log_priors_model_2(params):
@@ -183,7 +213,7 @@ def log_priors_model_2(params):
     if sigma_sq <= sigma_lower or sigma_sq > sigma_upper:
         return -np.inf
     else:
-        return log_hill_log_logistic_likelihood(hill) + log_pic50_logistic_likelihood(pic50)
+        return log_hill_uniform(hill) + log_pic50_exponential(pic50)
 
 
 def log_target(y, concs, params, num_pts, t, pi_bit):
