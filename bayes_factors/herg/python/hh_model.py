@@ -8,6 +8,7 @@ import scipy.io as sio
 import time
 import scipy.optimize as so
 import multiprocessing as mp
+import os
 
 
 def model_1(y, t, k1, k2, k3, k4):
@@ -80,6 +81,8 @@ def solve_model_for_O(model, params):
 
 
 output_dir = "../output/"
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
 
 expt_mat = sio.loadmat('../input/sine_wave_16713110_dofetilide_subtracted_leak_subtracted.mat')
 expt_current = expt_mat['T'][:, 0]
