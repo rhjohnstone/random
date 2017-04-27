@@ -151,12 +151,12 @@ def define_model(model):
         labels = [r"$pIC_{50}$", r"$\sigma^2$"]
         #prior_xs = [np.linspace(pic50_lower, pic50_upper, num_prior_pts),
         #            np.linspace(sigma_lower,sigma_upper,num_prior_pts)]
-        prior_xs = [np.linspace(pic50_exp_lower, pic50_exp_lower+14, num_prior_pts),
-                    np.linspace(sigma_lower, sigma_upper, num_prior_pts)]
+        prior_xs = [np.linspace(pic50_exp_lower-3, pic50_exp_lower+21, num_prior_pts),
+                    np.concatenate(([sigma_lower-100,sigma_lower],(np.linspace(sigma_lower, sigma_upper, num_prior_pts)),[sigma_upper,sigma_upper+100]))]
         #prior_pdfs = [st.logistic.pdf(prior_xs[0], loc=mu, scale=s),
         #              np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
         prior_pdfs = [st.expon.pdf(prior_xs[0], loc=pic50_exp_lower, scale=pic50_exp_scale),
-                      np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
+                      np.concatenate(([0,0],np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower),[0,0]))]
     elif model == 2:
         num_params = 3
         log_data_likelihood = log_data_likelihood_model_2
@@ -166,15 +166,19 @@ def define_model(model):
         #prior_xs = [np.linspace(pic50_lower, pic50_upper, num_prior_pts),
         #            np.linspace(hill_lower, hill_upper, num_prior_pts),
         #            np.linspace(sigma_lower,sigma_upper,num_prior_pts)]
-        prior_xs = [np.linspace(pic50_exp_lower, pic50_exp_lower+14, num_prior_pts),
-                    np.linspace(hill_uniform_lower, hill_uniform_upper, num_prior_pts),
-                    np.linspace(sigma_lower, sigma_upper, num_prior_pts)]
+        prior_xs = [np.linspace(pic50_exp_lower-3, pic50_exp_lower+21, num_prior_pts),
+                    np.concatenate(([hill_uniform_lower-2,hill_uniform_lower],
+                                    np.linspace(hill_uniform_lower, hill_uniform_upper, num_prior_pts),
+                                    [hill_uniform_upper,hill_uniform_upper+2])),
+                    np.concatenate(([sigma_lower - 100, sigma_lower],
+                                    (np.linspace(sigma_lower, sigma_upper, num_prior_pts)),
+                                    [sigma_upper, sigma_upper + 100]))]
         #prior_pdfs = [st.logistic.pdf(prior_xs[0],loc=mu,scale=s),
         #              st.fisk.pdf(prior_xs[1],c=beta,scale=alpha),
         #              np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
         prior_pdfs = [st.expon.pdf(prior_xs[0], loc=pic50_exp_lower, scale=pic50_exp_scale),
-                      np.ones(num_prior_pts) / (1. * hill_uniform_upper - hill_uniform_lower),
-                      np.ones(num_prior_pts)/(1.*sigma_upper-sigma_lower)]
+                      np.concatenate(([0,0],np.ones(num_prior_pts) / (1. * hill_uniform_upper - hill_uniform_lower),[0,0])),
+                      np.concatenate(([0, 0], np.ones(num_prior_pts) / (1. * sigma_upper - sigma_lower), [0, 0]))]
 
 
 def log_hill_log_logistic_likelihood(x):

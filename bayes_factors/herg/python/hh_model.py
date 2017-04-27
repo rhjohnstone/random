@@ -1,8 +1,11 @@
 from scipy.integrate import odeint
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import cma
 import scipy.io as sio
+import time
 
 
 def model_1(y, t, k1, k2, k3, k4):
@@ -74,7 +77,9 @@ def solve_model_for_O(model, params):
     return model_soln[:, 1]
 
 
-expt_mat = sio.loadmat('sine_wave_16713110_dofetilide_subtracted_leak_subtracted.mat')
+output_dir = "../output/"
+
+expt_mat = sio.loadmat('../input/sine_wave_16713110_dofetilide_subtracted_leak_subtracted.mat')
 expt_current = expt_mat['T'][:, 0]
 
 num_pts = len(expt_current)
@@ -146,6 +151,7 @@ I_Kr_2 = G_Kr * O_2 * (V_trace-E_K)
 
 fig = plt.figure()
 ax = fig.add_subplot(312)
+ax.plot(t_trace/1000., expt_current, color='red', label='Expt')
 ax.grid()
 #for i in xrange(3):
     #ax.plot(t_trace, solved_traces[:, i], label=labels[i])
@@ -154,6 +160,7 @@ ax.legend(loc=4)
 
 ax3 = fig.add_subplot(313)
 ax3.grid()
+ax3.plot(t_trace/1000., expt_current, color='red', label='Expt')
 ax3.plot(t_trace/1000., I_Kr_2, label=r"$M_2, I_{Kr}$")
 ax3.legend(loc=4)
 
@@ -166,10 +173,10 @@ ax.set_xticklabels([])
 ax.set_ylabel('Current (nA)')
 ax3.set_ylabel('Current (nA)')
 ax2.set_ylabel('Voltage (mV)')
-ax.plot(t_trace/1000., expt_current, color='red', label='Expt')
-ax3.plot(t_trace/1000., expt_current, color='red', label='Expt')
 fig.tight_layout()
-plt.show(block=True)
+fig.savefig(output_dir+"initial_traces.png")
+plt.close()
+#plt.show(block=True)
 
 
 """data_fig = plt.figure()
@@ -181,24 +188,47 @@ data_fig.tight_layout()
 plt.show(block=True)"""
 
 
-model = 1
-x0 = np.array([P1, P2, P3, P4, P5, P6, P7, P8])
-sigma0 = 0.01
-opts = cma.CMAOptions()
-es = cma.CMAEvolutionStrategy(x0, sigma0, opts)
-while not es.stop():
-    X = es.ask()
-    f_vals = [sum_of_square_diffs(x, model) for x in X]
-    es.tell(X, f_vals)
-    es.disp()
-res = es.result()
+#model = 1
+num_models = 2
+best_fits = []
+times = []
+for model in xrange(1, num_models+1):
+    start = time.time()
+    x0 = np.array([P1, P2, P3, P4, P5, P6, P7, P8])
+    sigma0 = 0.01
+    opts = cma.CMAOptions()
+    es = cma.CMAEvolutionStrategy(x0, sigma0, opts)
+    while not es.stop():
+        X = es.ask()
+        f_vals = [sum_of_square_diffs(x, model) for x in X]
+        es.tell(X, f_vals)
+        es.disp()
+    res = es.result()
+    best_fits.append(np.concatenate((res[0],[res[1]])))
+    times.append(int(time.time()-start))
 
-best_fit_params = res[0]
-best_fit = solve_model_for_O(model, best_fit_params)
-I_Kr = G_Kr * best_fit * (V_trace-E_K)
+try:
+    np.savetxt(output_dir+"best_fits.txt", np.array(best_fits))
+except:
+    print "Couldn't save best fits for some reason"
+    print best_fits
+
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.plot(t_trace/1000., I_Kr, color='blue', label='Best fit')
-ax.plot(t_trace/1000., expt_current, color='red', label='Expt')
+ax.plot(t_trace/1000., expt_current, label='Expt')
+for model in xrange(1, num_models+1):
+    best_fit_params, best_sos = best_fits[model-1]
+    best_fit = solve_model_for_O(model, best_fit_params)
+    I_Kr = G_Kr * best_fit * (V_trace-E_K)
+    ax.plot(t_trace/1000., I_Kr, label='M{}, sos = {}'.format(model,round(best_sos,1)))
+ax.set_ylabel("Current (nA)")
+ax.set_xlabel("Time (s)")
+ax.legend()
 fig.tight_layout()
-plt.show(block=True)
+fig.savefig(output_dir+"herg_best_fits.png")
+plt.close()
+#plt.show(block=True)
+
+print "Times taken:"
+print times
+

@@ -7,8 +7,9 @@ import cma
 import itertools as it
 import os
 
-hill_lower = 0
-pic50_lower = -3
+hill_lower = dr.hill_uniform_lower
+hill_upper = dr.hill_uniform_upper
+pic50_lower = dr.pic50_exp_lower
 
 def sum_of_square_diffs(params, model):
     if model == 1:
@@ -16,7 +17,7 @@ def sum_of_square_diffs(params, model):
         hill = 1
     elif model == 2:
         pic50, hill = params
-    if hill <= hill_lower or pic50 <= pic50_lower:
+    if hill <= hill_lower or hill > hill_upper or pic50 <= pic50_lower:
         return 1e9
     else:
         predicted = dr.dose_response_model(concs, hill, dr.pic50_to_ic50(pic50))
