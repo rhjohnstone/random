@@ -196,6 +196,7 @@ plt.show(block=True)"""
 #model = 1
 
 def do_minimisation(method):
+    print "Entering method", method
 
     num_models = 2
     if method == 1:
@@ -248,7 +249,7 @@ def do_minimisation(method):
         for model in xrange(1, num_models+1):
             start = time.time()
             x0 = np.array([P1, P2, P3, P4, P5, P6, P7, P8])
-            res = so.minimize(sum_of_square_diffs, x0, args=(model), method='Nelder-Mead')
+            res = so.minimize(sum_of_square_diffs, x0, args=(model,), method='Nelder-Mead')
             best_params = res.x
             best_f = res.fun
             best_fits.append(np.concatenate((best_params, [best_f])))
@@ -282,6 +283,8 @@ def do_minimisation(method):
 
 num_processes = 2
 pool = mp.Pool(num_processes)
-pool.map(do_minimisation,[1,2])
+pool.map(do_minimisation, [1,2])
 pool.close()
 pool.join()
+
+#do_minimisation(2)
