@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import cma
 import scipy.io as sio
 import time
+import scipy.optimize as so
+import multiprocessing as mp
 
 
 def model_1(y, t, k1, k2, k3, k4):
@@ -189,46 +191,94 @@ plt.show(block=True)"""
 
 
 #model = 1
-num_models = 2
-best_fits = []
-times = []
-for model in xrange(1, num_models+1):
-    start = time.time()
-    x0 = np.array([P1, P2, P3, P4, P5, P6, P7, P8])
-    sigma0 = 0.01
-    opts = cma.CMAOptions()
-    es = cma.CMAEvolutionStrategy(x0, sigma0, opts)
-    while not es.stop():
-        X = es.ask()
-        f_vals = [sum_of_square_diffs(x, model) for x in X]
-        es.tell(X, f_vals)
-        es.disp()
-    res = es.result()
-    best_fits.append(np.concatenate((res[0],[res[1]])))
-    times.append(int(time.time()-start))
 
-try:
-    np.savetxt(output_dir+"best_fits.txt", np.array(best_fits))
-except:
-    print "Couldn't save best fits for some reason"
-    print best_fits
+def do_minimisation(method):
 
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.plot(t_trace/1000., expt_current, label='Expt')
-for model in xrange(1, num_models+1):
-    best_fit_params, best_sos = best_fits[model-1]
-    best_fit = solve_model_for_O(model, best_fit_params)
-    I_Kr = G_Kr * best_fit * (V_trace-E_K)
-    ax.plot(t_trace/1000., I_Kr, label='M{}, sos = {}'.format(model,round(best_sos,1)))
-ax.set_ylabel("Current (nA)")
-ax.set_xlabel("Time (s)")
-ax.legend()
-fig.tight_layout()
-fig.savefig(output_dir+"herg_best_fits.png")
-plt.close()
-#plt.show(block=True)
+    num_models = 2
+    if method == 1:
+        best_fits = []
+        times = []
+        for model in xrange(1, num_models+1):
+            start = time.time()
+            x0 = np.array([P1, P2, P3, P4, P5, P6, P7, P8])
+            sigma0 = 0.01
+            opts = cma.CMAOptions()
+            es = cma.CMAEvolutionStrategy(x0, sigma0, opts)
+            while not es.stop():
+                X = es.ask()
+                f_vals = [sum_of_square_diffs(x, model) for x in X]
+                es.tell(X, f_vals)
+                es.disp()
+            res = es.result()
+            best_fits.append(np.concatenate((res[0],[res[1]])))
+            times.append(int(time.time()-start))
 
-print "Times taken:"
-print times
+        try:
+            np.savetxt(output_dir+"cmaes_best_fits.txt", np.array(best_fits))
+        except:
+            print "Couldn't save best fits for some reason"
+            print best_fits
 
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(t_trace/1000., expt_current, label='Expt')
+        for model in xrange(1, num_models+1):
+            best_fit_params, best_sos = best_fits[model-1]
+            best_fit = solve_model_for_O(model, best_fit_params)
+            I_Kr = G_Kr * best_fit * (V_trace-E_K)
+            ax.plot(t_trace/1000., I_Kr, label='M{}, sos = {}'.format(model,round(best_sos,1)))
+        ax.set_ylabel("Current (nA)")
+        ax.set_xlabel("Time (s)")
+        ax.legend()
+        fig.tight_layout()
+        fig.savefig(output_dir+"cmaes_herg_best_fits.png")
+        fig.savefig(output_dir+"cmaes_herg_best_fits.svg")
+        plt.close()
+        #plt.show(block=True)
+
+        print "Times taken:"
+        print times
+
+    elif method==2:
+        best_fits = []
+        times = []
+        for model in xrange(1, num_models+1):
+            start = time.time()
+            x0 = np.array([P1, P2, P3, P4, P5, P6, P7, P8])
+            res = so.minimize(sum_of_square_diffs, x0, args=(model), method='Nelder-Mead')
+            best_params = res.x
+            best_f = res.fun
+            best_fits.append(np.concatenate((best_params, [best_f])))
+            times.append(int(time.time()-start))
+
+        try:
+            np.savetxt(output_dir+"minimize_best_fits.txt", np.array(best_fits))
+        except:
+            print "Couldn't save best fits for some reason"
+            print best_fits
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(t_trace/1000., expt_current, label='Expt')
+        for model in xrange(1, num_models+1):
+            best_fit_params, best_sos = best_fits[model-1]
+            best_fit = solve_model_for_O(model, best_fit_params)
+            I_Kr = G_Kr * best_fit * (V_trace-E_K)
+            ax.plot(t_trace/1000., I_Kr, label='M{}, sos = {}'.format(model,round(best_sos,1)))
+        ax.set_ylabel("Current (nA)")
+        ax.set_xlabel("Time (s)")
+        ax.legend()
+        fig.tight_layout()
+        fig.savefig(output_dir+"minimize_herg_best_fits.png")
+        fig.savefig(output_dir+"minimize_herg_best_fits.svg")
+        plt.close()
+        #plt.show(block=True)
+
+        print "Times taken:"
+        print times
+
+num_processes = 2
+pool = mp.Pool(num_processes)
+pool.map(do_minimisation,[1,2])
+pool.close()
+pool.join()
