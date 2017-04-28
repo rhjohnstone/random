@@ -25,7 +25,7 @@ temperature = 1.0  # sampling from full posterior
 def plot_mcmc_samples(drug_channel):
     drug, channel = drug_channel
 
-    fig = plt.figure(figsize=(10, 4))
+    fig = plt.figure(figsize=(5, 10))
     axes = {}
     axes[1] = fig.add_subplot(211)
     axes[2] = fig.add_subplot(212)
@@ -86,7 +86,7 @@ def plot_mcmc_samples(drug_channel):
         axes[model].plot(concs, responses, 'o', color='orange', ms=10, label="Expt data")
         axes[model].set_title(title, fontsize = fsize)
         axes[model].legend(loc=2)
-    axes[2].set_yticklabels([])
+    #axes[2].set_yticklabels([])
     fig.tight_layout()
     fig.savefig(all_figs_dir+'{}_{}_mcmc_samples.png'.format(drug, channel))
     fig.savefig(figs_dir+'{}_{}_mcmc_samples.pdf'.format(drug,channel,model))
