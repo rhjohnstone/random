@@ -25,7 +25,7 @@ temperature = 1.0  # sampling from full posterior
 def plot_mcmc_samples(drug_channel):
     drug, channel = drug_channel
 
-    fig = plt.figure(figsize=(5, 10))
+    fig = plt.figure(figsize=(5, 8))
     axes = {}
     axes[1] = fig.add_subplot(211)
     axes[2] = fig.add_subplot(212)
