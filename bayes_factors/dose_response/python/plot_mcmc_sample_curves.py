@@ -1,9 +1,12 @@
 import doseresponse as dr
 import numpy as np
 import numpy.random as npr
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import os
 import itertools as it
+import multiprocessing as mp
 
 
 all_figs_dir = "../output/all_mcmc_samples/"
@@ -17,6 +20,7 @@ dr.setup(data_file)
 drugs_to_run, channels_to_run = dr.list_drug_channel_options(run_all)
 
 temperature = 1.0  # sampling from full posterior
+
 
 def plot_mcmc_samples(drug_channel):
     drug, channel = drug_channel
@@ -85,15 +89,31 @@ def plot_mcmc_samples(drug_channel):
         axes[model].legend(loc=2)
     axes[2].set_yticklabels([])
     fig.tight_layout()
-    fig.savefig(all_figs_dir+'{}_{}_mcmc_samples.png'.format(drug,channel))
+    fig.savefig(all_figs_dir+'{}_{}_mcmc_samples.png'.format(drug, channel))
     #fig.savefig(figs_dir+'{}_{}_mcmc_samples.pdf'.format(drug,channel,model))
     plt.close()
+    return None
+
+
+def try_and_plot(drug_channel):
+    try:
+        return plot_mcmc_samples(drug_channel)
+    except:
+        print "Can't plot for", drug_channel
+        return None
 
 #drugs_channels = [('Lopinavir', 'Kir2.1')]
 drugs_channels = it.product(drugs_to_run, channels_to_run)
 
-for drug_channel in drugs_channels:
+"""for drug_channel in drugs_channels:
     try:
         plot_mcmc_samples(drug_channel)
     except:
-        print "can't plot mcmc samples for", drug_channel
+        print "can't plot mcmc samples for", drug_channel"""
+
+num_processes = 6
+pool = mp.Pool(num_processes)
+results = pool.map(try_and_plot, drugs_channels)
+pool.close()
+pool.join()
+
