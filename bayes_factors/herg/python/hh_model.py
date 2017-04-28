@@ -280,10 +280,11 @@ def do_minimisation(method):
 
         print "Times taken:"
         print times
+    return None
 
 num_processes = 2
 pool = mp.Pool(num_processes)
-pool.map(do_minimisation, [1,2])
+results = pool.map(do_minimisation, [1,2])
 pool.close()
 pool.join()
 
