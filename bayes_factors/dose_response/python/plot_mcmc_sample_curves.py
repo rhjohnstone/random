@@ -90,7 +90,7 @@ def plot_mcmc_samples(drug_channel):
     axes[2].set_yticklabels([])
     fig.tight_layout()
     fig.savefig(all_figs_dir+'{}_{}_mcmc_samples.png'.format(drug, channel))
-    #fig.savefig(figs_dir+'{}_{}_mcmc_samples.pdf'.format(drug,channel,model))
+    fig.savefig(figs_dir+'{}_{}_mcmc_samples.pdf'.format(drug,channel,model))
     plt.close()
     return None
 
@@ -102,8 +102,8 @@ def try_and_plot(drug_channel):
         print "Can't plot for", drug_channel
         return None
 
-#drugs_channels = [('Lopinavir', 'Kir2.1')]
-drugs_channels = it.product(drugs_to_run, channels_to_run)
+drugs_channels = [('Amiodarone', 'hERG'), ('Amitriptyline', 'Cav1.2')]
+#drugs_channels = it.product(drugs_to_run, channels_to_run)
 
 """for drug_channel in drugs_channels:
     try:
@@ -111,7 +111,7 @@ drugs_channels = it.product(drugs_to_run, channels_to_run)
     except:
         print "can't plot mcmc samples for", drug_channel"""
 
-num_processes = 6
+num_processes = 2
 pool = mp.Pool(num_processes)
 results = pool.map(try_and_plot, drugs_channels)
 pool.close()
