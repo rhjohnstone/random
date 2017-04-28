@@ -7,8 +7,8 @@ import cma
 import scipy.io as sio
 import time
 import scipy.optimize as so
-import multiprocessing as mp
 import os
+import sys
 
 
 def model_1(y, t, k1, k2, k3, k4):
@@ -79,6 +79,7 @@ def solve_model_for_O(model, params):
         y0 = step_sol[1]
     return model_soln[:, 1]
 
+model = int(sys.argv[1])
 
 output_dir = "../output/"
 if not os.path.exists(output_dir):
@@ -154,7 +155,7 @@ I_Kr_2 = G_Kr * O_2 * (V_trace-E_K)
 #plt.plot(t_trace,O)
 #plt.show()
 
-fig = plt.figure()
+"""fig = plt.figure()
 ax = fig.add_subplot(312)
 ax.plot(t_trace/1000., expt_current, color='red', label='Expt')
 ax.grid()
@@ -180,7 +181,7 @@ ax3.set_ylabel('Current (nA)')
 ax2.set_ylabel('Voltage (mV)')
 fig.tight_layout()
 fig.savefig(output_dir+"initial_traces.png")
-plt.close()
+plt.close()"""
 #plt.show(block=True)
 
 
@@ -280,10 +281,4 @@ def do_minimisation(min_method):
         print times
     return None
 
-num_processes = 2
-pool = mp.Pool(num_processes)
-results = pool.map(do_minimisation, [1,2])
-pool.close()
-pool.join()
-
-#do_minimisation(2)
+do_minimisation(model)
