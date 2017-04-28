@@ -51,13 +51,17 @@ def compute_log_pys(drug_channel):
     return B_21, B_12
 
 #drugs_channels = [('Lopinavir', 'Kir2.1')]
-drugs_channels = it.product(drugs_to_run, channels_to_run)
+#drugs_channels = it.product(drugs_to_run, channels_to_run)
+
+drugs_channels = [('Amiodarone', 'hERG'), ('Amitriptyline', 'Cav1.2')]
 
 for drug_channel in drugs_channels:
     try:
         print "\n"
         print drug_channel
         B_21, B_12 = compute_log_pys(drug_channel)
+        print "B_21 = {}".format(B_21)
+        print "B_12 = {}".format(B_12)
         with open(bf_file, "a") as outfile:
             outfile.write("{}\n".format(drug_channel))
             outfile.write("B_21 = {}\n".format(B_21))
