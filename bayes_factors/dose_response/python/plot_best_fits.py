@@ -47,10 +47,10 @@ num_models = 2
 def do_plot(drug_channel):
     global concs, responses
 
-    fig = plt.figure(figsize=(10, 4))
+    fig = plt.figure(figsize=(5, 8))
     axes = {}
-    axes[1] = fig.add_subplot(121)
-    axes[2] = fig.add_subplot(122)#, sharey=axes[1])
+    axes[1] = fig.add_subplot(211)
+    axes[2] = fig.add_subplot(212)#, sharey=axes[1])
 
     fsize = 14
 
@@ -103,21 +103,22 @@ def do_plot(drug_channel):
         axes[model].grid()
         axes[model].set_xscale('log')
         axes[model].set_ylim(0,100)
-        if model == 1:
-            axes[model].set_ylabel(r"% {} block".format(channel),fontsize=fsize)
+        axes[model].set_ylabel(r"% {} block".format(channel),fontsize=fsize)
         axes[model].set_xlabel(r"{} concentration ($\mu$M)".format(drug),fontsize=fsize)
         axes[model].plot(x_range, predicted, color='blue', lw=2, label="Best fit")
         axes[model].plot(concs, responses, 'o', color='orange', ms=10, label="Expt data")
         axes[model].legend(loc=2)
         axes[model].set_title("$M_{}, pIC50 = {}, Hill = {}, SS = {}$".format(model, round(pic50,2), round(hill,2), round(ss,2)),fontsize=fsize)
-    axes[2].set_yticklabels([])
+    #axes[2].set_yticklabels([])
     fig.tight_layout()
     #fig.savefig(figs_dir+"{}_{}_model_{}_best_fit.png".format(drug,channel,model))
     fig.savefig(all_figs_dir+"{}_{}_best_fits.png".format(drug, channel))
-    #fig.savefig(figs_dir+"{}_{}_model_{}_best_fit.pdf".format(drug,channel,model))
+    fig.savefig(figs_dir+"{}_{}_best_fit.pdf".format(drug,channel))
     plt.close()
 
-for drug_channel in it.product(drugs_to_run, channels_to_run):
+drugs_channels = [('Amiodarone', 'hERG'), ('Amitriptyline', 'Cav1.2')]
+
+for drug_channel in drugs_channels:
     try:
         do_plot(drug_channel)
     except:
