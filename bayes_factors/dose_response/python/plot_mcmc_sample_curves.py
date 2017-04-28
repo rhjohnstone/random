@@ -27,8 +27,8 @@ def plot_mcmc_samples(drug_channel):
 
     fig = plt.figure(figsize=(10, 4))
     axes = {}
-    axes[1] = fig.add_subplot(121)
-    axes[2] = fig.add_subplot(122)
+    axes[1] = fig.add_subplot(211)
+    axes[2] = fig.add_subplot(212)
 
     #drug = "Amiodarone"
     #channel = "hERG"
@@ -36,7 +36,7 @@ def plot_mcmc_samples(drug_channel):
     # channel = "Kir2.1"
 
     num_models = 2
-    for model in xrange(1,num_models+1):
+    for model in xrange(1, num_models+1):
 
         dr.define_model(model)
 
@@ -70,8 +70,7 @@ def plot_mcmc_samples(drug_channel):
 
         axes[model].set_xscale('log')
         axes[model].grid()
-        if model == 1:
-            axes[model].set_ylabel(r"% {} block".format(channel), fontsize=fsize)
+        axes[model].set_ylabel(r"% {} block".format(channel), fontsize=fsize)
         axes[model].set_xlabel(r"{} concentration ($\mu$M)".format(drug), fontsize=fsize)
         axes[model].set_ylim(0,100)
 
