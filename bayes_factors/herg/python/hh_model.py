@@ -79,7 +79,7 @@ def solve_model_for_O(model, params):
         y0 = step_sol[1]
     return model_soln[:, 1]
 
-model = int(sys.argv[1])
+min_method = int(sys.argv[1])
 
 output_dir = "../output/"
 if not os.path.exists(output_dir):
@@ -281,4 +281,4 @@ def do_minimisation(min_method):
         print times
     return None
 
-do_minimisation(model)
+do_minimisation(min_method)
