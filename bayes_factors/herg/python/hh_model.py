@@ -227,7 +227,8 @@ def do_minimisation(min_method):
         ax = fig.add_subplot(111)
         ax.plot(t_trace/1000., expt_current, label='Expt')
         for m in xrange(1, num_models+1):
-            best_fit_params, best_sos = best_fits[m-1]
+            best_fit_params = best_fits[m - 1][:-1]
+            best_sos = best_fits[m - 1][-1]
             best_fit = solve_model_for_O(m, best_fit_params)
             I_Kr = G_Kr * best_fit * (V_trace-E_K)
             ax.plot(t_trace/1000., I_Kr, label='M{}, sos = {}'.format(m,round(best_sos,1)))
@@ -264,7 +265,8 @@ def do_minimisation(min_method):
         ax = fig.add_subplot(111)
         ax.plot(t_trace/1000., expt_current, label='Expt')
         for m in xrange(1, num_models+1):
-            best_fit_params, best_sos = best_fits[m-1]
+            best_fit_params = best_fits[m-1][:-1]
+            best_sos = best_fits[m-1][-1]
             best_fit = solve_model_for_O(m, best_fit_params)
             I_Kr = G_Kr * best_fit * (V_trace-E_K)
             ax.plot(t_trace/1000., I_Kr, label='M{}, sos = {}'.format(m, round(best_sos, 1)))
