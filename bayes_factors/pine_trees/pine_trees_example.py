@@ -1,9 +1,11 @@
+import pine_trees_setup as pt
 import numpy as np
 import numpy.random as npr
 import matplotlib.pyplot as plt
 import sys
 import scipy.stats as st
 import multiprocessing as mp
+import os
 from time import time
 
 from rpy2.robjects.packages import importr
@@ -16,20 +18,8 @@ start = time()
 
 model = int(sys.argv[1])
 
-seed = model
-npr.seed(seed)
-
-
-def log_data_likelihood(y, explan, explan_bar, params, num_pts, t, pi_bit):
-    """
-    compute log likelihood of data 
-    """
-    # type: (object, object, object, object, object, object) -> object
-    if params[-1] <= 0:
-        print params
-    temp_1 = 0.5 * num_pts * np.log(params[-1])
-    temp_2 = np.sum((y - params[0] - params[1] * (explan - explan_bar))**2) / (2. * params[-1])
-    return -t * (pi_bit + temp_1 + temp_2)
+#seed = model
+#npr.seed(seed)
 
 
 def log_invgamma_prior(x, a, b):
@@ -47,18 +37,18 @@ def log_target(params, y, explan, explan_bar, num_pts, a, b, params_means, param
     if params[-1] <= 0:
         return -np.inf
     else:
-        return (log_data_likelihood(y, explan, explan_bar, params, num_pts, t, pi_bit)
+        return (pt.log_data_likelihood(y, explan, explan_bar, params, num_pts, t, pi_bit)
                 + log_normal_prior(params[:2], params_means, params_vars)
                 + log_invgamma_prior(params[-1], a, b))
 
 
 # (yi, xi, zi)
-pine_data = np.loadtxt("pine_data.txt")
+pine_data = pt.load_pine_data()
 
 y = pine_data[:,0]
 
 num_pts = len(y)
-pi_bit = 0.5*num_pts*np.log(2*np.pi)
+pi_bit = pt.compute_pi_bit_of_log_likelihood(y)
 
 params_mean = np.array([3000, 185]) # same for both models
 params_vars = np.array([10**6, 10**4]) # independent, so not bothering with covariance matrix
@@ -81,33 +71,29 @@ explan_bar = np.mean(explan)
 
 
 def approximate_log_likelihood(chain):
-    end = chain.shape[0]
-    burn = end/4
-    log_likelihood_samples = np.zeros(end-burn)
-    total = 0.
-    for it in xrange(burn,end):
-        log_likelihood_samples[it-burn] = log_data_likelihood(y, explan, explan_bar, chain[it, :num_params], num_pts, 1, pi_bit)
+    num_its = chain.shape[0]
+    log_likelihood_samples = np.zeros(num_its)
+    for it in xrange(num_its):
+        log_likelihood_samples[it] = pt.log_data_likelihood(y, explan, explan_bar, chain[it, :num_params], num_pts, 1, pi_bit)
     log_likelihood_mcse = mcmcse.mcse(log_likelihood_samples, method="obm")
     se = log_likelihood_mcse[1][0]
-    #print "se =", se
-    return np.sum(log_likelihood_samples)/(end-burn), se
+    return np.sum(log_likelihood_samples)/num_its, se
 
 
 def do_mcmc(temperature):#, theta0):
-
-    #print "Starting a chain"
+    print "Starting chain"
 
     #theta_cur = np.copy(theta0)
     theta_cur = 100*np.ones(num_params)
     log_target_cur = log_target(theta_cur, y, explan, explan_bar, num_pts, a, b, params_mean, params_vars, temperature)
 
-    total_iterations = 200000
+    total_iterations = 500000
     thinning = 5
     num_saved = total_iterations / thinning + 1
     burn = num_saved / 4
 
     chain = np.zeros((num_saved, num_params+1))
-    chain[0,:] = np.concatenate((theta_cur,[log_target_cur]))
+    chain[0, :] = np.concatenate((theta_cur,[log_target_cur]))
 
     proposal_cov = np.eye(num_params)
     loga = 0.
@@ -116,7 +102,7 @@ def do_mcmc(temperature):#, theta0):
     cov_estimate = np.copy(proposal_cov)
 
     status_when = 1000
-    adapt_when = 100*num_params
+    adapt_when = 1000*num_params
 
     t = 1
     s = 1
@@ -157,7 +143,8 @@ def do_mcmc(temperature):#, theta0):
             loga += gamma_s*(accepted-0.25)
             s += 1
         t += 1
-    return chain
+    # discard burn-in before saving chain, just to save space mostly
+    return chain[burn:, :]
 
 """marginal_figs = {}
 marginal_axes = {}
@@ -166,29 +153,20 @@ for k in xrange(num_params):
     marginal_axes[k] = marginal_figs[k].add_subplot(111)"""
 
 
-n = 30
+n = 50
 c = 5
 temperatures = (np.arange(n+1.)/n)**c
 
 
 def log_approxn(temperature):
-    chain_file = 'model_{}_chain_n_{}_c_{}_temp_{}.txt'.format(model, n, c, temperature)
+    chain_file = pt.define_chain_file(model, temperature)
     chain = do_mcmc(temperature)
-    np.savetxt(chain_file,chain)
-    end = chain.shape[0]
-    burn = end/4
-    #for j in xrange(num_params):
-    #    marginal_axes[j].hist(chain[burn:,j],normed=True,alpha=0.3)
+    np.savetxt(chain_file, chain)
     approx_log_likelihood, se = approximate_log_likelihood(chain)
     return approx_log_likelihood, se
 
 
-
-
-
 def log_model_likelihood():
-
-
 
     #theta0 = 10*np.ones(num_params)
     """log_approxns = np.zeros(n+1)
@@ -201,7 +179,7 @@ def log_model_likelihood():
         #theta0 = np.mean(chain[burn:,:num_params], axis=0)
         log_approxns[i] = approximate_log_likelihood(chain)"""
 
-    num_cores = 1
+    num_cores = 5
     #pool = mp.Pool(num_cores)
     #log_approxns = np.array(pool.map_async(log_approxn,temperatures).get(9999))
     if num_cores==1:
@@ -254,10 +232,6 @@ prior_pdfs = [st.norm.pdf(prior_xs[0],params_mean[0],np.sqrt(params_vars[0])),
     if priors and i<3:
         marginal_axes[i].plot(prior_xs[i], prior_pdfs[i], label='Prior', color='red')
     #ax.legend()"""
-
-#fig = plt.figure()
-#ax = fig.add_subplot(111)
-#ax.plot(chain[burn:,-1])
 
 
 time_taken = time()-start

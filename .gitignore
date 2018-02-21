@@ -1,0 +1,6 @@
+
+bayes_factors/dose_response/output/
+
+*.pyc
+
+bayes_factors/pine_trees/output/
