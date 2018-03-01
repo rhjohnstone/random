@@ -28,22 +28,22 @@ class Participant(object):
             print "No more volume!"
         market.volume += new_contribution
 
+if __name__ == "__main__":
+    initial_market_volume = 10000.
+    max_participant_volume = 100000000.
+    participation = 0.24
 
-initial_market_volume = 10000.
-max_participant_volume = 100000000.
-participation = 0.24
+    num_participants = 4
+    num_iterations = 10000
 
-num_participants = 4
-num_iterations = 10000
+    market = Market(initial_market_volume)
+    participants = [Participant(max_participant_volume, participation, market) for p in xrange(num_participants)]
 
-market = Market(initial_market_volume)
-participants = [Participant(max_participant_volume, participation, market) for p in xrange(num_participants)]
+    for i in xrange(num_iterations-1):
+        for p in xrange(num_participants):
+            participants[p].update(market)
 
-for i in xrange(num_iterations-1):
     for p in xrange(num_participants):
         participants[p].update(market)
-
-for p in xrange(num_participants):
-    participants[p].update(market)
-    print "{} : {}".format(p, participants[p]._total_contribution)
-    
+        print "{} : {}".format(p, participants[p]._total_contribution)
+        
