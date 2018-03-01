@@ -8,9 +8,9 @@ class Participant(object):
 
     def __init__(self, max_volume, participation, market):
         self._participation = participation  # no check on bounds yet
-        self._remaining = max_volume
         initial_market_volume = market.volume
         initial_contribution = self.compute_contribution(initial_market_volume)
+        self._remaining = max_volume - initial_contribution        
         self._total_contribution = initial_contribution
         self._total_volume_accounted_for = initial_market_volume + initial_contribution
         market.volume += initial_contribution
