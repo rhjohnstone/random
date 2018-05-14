@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 import numpy.random as npr
 import itertools as it
+from time import time
 
 
 def sample_two_5s():
@@ -24,14 +25,22 @@ def sample_1_7():
 
 
 T = 1000000
-samples = np.zeros(T)
-for t in xrange(T):
-    samples[t] = sample_1_7()
 
-d = np.diff(np.unique(samples)).min()
-left_of_first_bin = samples.min() - float(d)/2
-right_of_last_bin = samples.max() + float(d)/2
-plt.hist(samples, np.arange(left_of_first_bin, right_of_last_bin + d, d))
-plt.show()
+start = time()
+for _ in xrange(T):
+    sample_1_7()
+tt = time()-start
+
+print "Time taken: {} s".format(int(tt))
+
+#samples = np.zeros(T)
+#for t in xrange(T):
+#    samples[t] = sample_1_7()
+#
+#d = np.diff(np.unique(samples)).min()
+#left_of_first_bin = samples.min() - float(d)/2
+#right_of_last_bin = samples.max() + float(d)/2
+#plt.hist(samples, np.arange(left_of_first_bin, right_of_last_bin + d, d))
+#plt.show()
 
 
